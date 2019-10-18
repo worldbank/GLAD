@@ -19,7 +19,7 @@ For an example of analysis enabled by this collection, please check the [**Learn
 Starts from the original datasets of each assessment (pulled from _eduraw_ collection in _datalibweb_ or from a local copy, directly downloaded from the data publishers)
 and ends with the creation of the dataset GLAD_ALL and GLAD_ALL-BASE. Files receive a master vintage that reflects any possible updates of a surveyid (_region_year_assessment_).
 
-Those two modules of GLAD (ALL and ALL-BASE) are at the learner level, that is, one observation corresponds to one learner or student or pupil. Both modules contain the [harmonized variables](https://github.com/worldbank/GLAD/wiki/Agreed-variables-to-include-in-GLAD-datasets), but the module ALL-BASE additionally includes all the original variables from the raw data. Since the ALL-BASE file may be very large, we recommend using the module ALL whenever possible.
+Those two modules of GLAD (ALL and ALL-BASE) are at the learner level, that is, one observation corresponds to one learner or student or pupil. Both modules contain the [harmonized variables](https://github.com/worldbank/GLAD/blob/master/00_documentation/Harmonized_Variables_in_GLAD.md), but the module ALL-BASE additionally includes all the original variables from the raw data. Since the ALL-BASE file may be very large, we recommend using the module ALL whenever possible.
 
 The output files are saved in the clone with adaptation vintage _wrk_A_, and corresponding markdown documents are generated with the same name. The assessments currently in the loop are (click on the links for each file's markdown documentation):
 
@@ -43,7 +43,7 @@ The output files are saved in the clone with adaptation vintage _wrk_A_, and cor
 
 ### Technical notes
 
-The GLAD programs by default use data from _datalibweb_. Please see [guidelines to retrieve data from datalibweb](#--Guidelines-to-Retrieve-Data-from-datalibweb). Note that _datalibweb_ requires access and authentication to the WorldBank network.
+The GLAD programs by default use data from _datalibweb_. Please see [guidelines to retrieve data from datalibweb](https://github.com/worldbank/GLAD/blob/master/00_documentation/Datalibweb_Guidelines.md). Note that _datalibweb_ requires access and authentication to the WorldBank network.
 
 The GLAD programs also make use of the _edukit_ package. The latest version of _edukit_ and installation instructions can be found in the [EduAnalyticsToolkit repo](https://github.com/worldbank/EduAnalyticsToolkit).
 
