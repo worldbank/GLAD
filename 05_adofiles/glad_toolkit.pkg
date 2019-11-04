@@ -1,0 +1,8 @@
+v 1.3
+d glad_toolkit
+d EduAnalytics, World Bank Group (eduanalytics@worldbank.org)
+
+f /glad_local_folder_setup.ado
+f /glad_hpro_as_cpi.ado
+f /glad_split_region_2_country.ado
+e
