@@ -18,6 +18,7 @@ local i_log = 3
 * Save timestamps for naming the log by initial time
 local today = subinstr("$S_DATE"," ","_",.)
 local time  = subinstr("$S_TIME",":","-",.)
+
 *-------------------------------------------------------------------------------
 
 
@@ -26,6 +27,9 @@ local time  = subinstr("$S_TIME",":","-",.)
 *-------------------------------------------------------------------------------
 * Basically, it runs region_year_assessment_v_M_v_A_GLAD.do files in 012_programs
 * that are part of the surveys_to_process in the current run_switch
+
+set trace on 
+set traced 1
 
 * Loop over all surveys to process (ie: WLD_2001_PIRLS)
 qui foreach survey of global surveys_to_process {
@@ -37,9 +41,18 @@ qui foreach survey of global surveys_to_process {
   gettoken trash  assessment : aux_token, parse("_")
   noi disp "{phang}Survey `survey' (region `region' year `year' assessment `assessment'):{p_end}"
 
+  // IMPORTANT: this calls the vintage number.
+  if "`assessment'"== "PASEC" & `year' == 2014 {
+   local vintage = "v02"  
+  }
+
+  else {
+	 local vintage = "v01"  
+  }
+
   * Test if there are do-file for this survey in "${clone}/01_harmonization/012_programs"
   * Note that there may be multiple files according to master vintage
-  local survey_do_files : dir "${clone}/01_harmonization/012_programs/`region'/`assessment'/" files "`survey'_*_M_wrk_A_GLAD_ALL.do", respectcase
+  local survey_do_files : dir "${clone}/01_harmonization/012_programs/`region'/`assessment'/" files "`survey'_`vintage'_M_wrk_A_GLAD_ALL.do", respectcase 
 
   * If no file is found, log the unfortunate survey and move on
   if `"`survey_do_files'"' == "" {
@@ -56,7 +69,7 @@ qui foreach survey of global surveys_to_process {
       noi do "${clone}/01_harmonization/012_programs/`region'/`assessment'/`this_do_file'"
 
       * Harmonization of proficiency on-the-fly, based on thresholds as CPI
-      glad_hpro_as_cpi
+      glad_hpro_as_cpi 
 
       * Generates the documentation for the newly created fullname.dta
       * but only works if Stata is version 15 or above (when dyntext was created)

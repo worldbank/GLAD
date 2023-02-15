@@ -4,7 +4,7 @@
 * Author: Diana Goldemberg
 *==============================================================================*
 
-qui {
+noisily {
 
 * Both CSVs handled in this do are master files that will be filtered within
 * each GLAD.do for only the specific assesment-year being manipulated
@@ -48,11 +48,11 @@ foreach threshold of varlist `r(varlist)' {
   * Extracts the prefix in the variable and store in a local
   local prefix = subinstr("`threshold'", "_threshold_var", "", 1)
   * Label the threshold_var variable into the dta
-  label var `prefix'_threshold_var "Threshold variable for harmonized proficiency (`prefix')"
+  label var `prefix'_threshold_var "Threshold variable for proficiency (`prefix')"
   * Label the corresponding threshold_val variable, which also ensures it does exist
-  label var `prefix'_threshold_val "Threshold value for harmonized proficiency (`prefix')"
+  label var `prefix'_threshold_val "Threshold value for proficiency (`prefix')"
   // Label the corresponding threshold_val variable, which also ensures it does exist
-  label var `prefix'_threshold_res "Threshold resulting variable for harmonized proficiency (`prefix')"
+  label var `prefix'_threshold_res "Threshold resulting variable suffix for proficiency (`prefix')"
 }
 
 * Also label the id variables
