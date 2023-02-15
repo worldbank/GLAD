@@ -17,8 +17,8 @@ if _rc != 0 {
 
 * Execution parameters
 global master_seed  12345    // Ensures reproducibility
-global from_datalibweb = 1   // If 1, uses datalibweb, if not 1, it takes raw .dtas in $network_HLO_DB
-global overwrite_files = 0   // If 1, it always creates each GLAD.dta file, even if it already exists, and overwrites any old file
+global from_datalibweb  = 0  // If 1, uses datalibweb, if not 1, it takes raw .dtas in $network_HLO_DB
+global overwrite_files  = 1   // If 1, it always creates each GLAD.dta file, even if it already exists, and overwrites any old file
 global shortcut = "${shortcut_GLAD}"  // NEVER COMMIT ANY CHANGES IN THIS LINE
 
 * Global paths that may serve as input and output for this task
