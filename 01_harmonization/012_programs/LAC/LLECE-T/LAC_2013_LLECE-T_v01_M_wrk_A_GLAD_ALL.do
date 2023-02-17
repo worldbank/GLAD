@@ -10,7 +10,7 @@ local master      = "v01_M"
 local adaptation  = "wrk_A_GLAD"
 local module      = "ALL"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Diana Goldemberg in October 8, 2019"
+local dofile_info = "last modified by Joao Pedro Azevedo in Feb 05, 2022"  /* change date*/
 *
 * Steps:
 * 0) Program setup (identical for all assessments)
@@ -204,7 +204,7 @@ quietly {
 
 
     // TRAIT Vars:
-    local traitvars	"age urban* male escs"
+    local traitvars	"age urban* male escs qescs has_qescs"
 
     *<_age_>
     clonevar age = edad
@@ -250,12 +250,99 @@ quietly {
 
     noi disp as res "{phang}Step 3 completed (`output_file'){p_end}"
 
-
-    *---------------------------------------------------------------------------
+   *---------------------------------------------------------------------------
     * 4) ESCS and other calculations (by Aroob, from Feb 2019)
     *---------------------------------------------------------------------------
-    // There was never a HAD file for LLECE-T, so this section is TBD
-    gen escs = .
+	* use the same syntax used for LAC_2013_LLECE
+	*** QUICK FIX ****
+    rename *, upper
+    ******************
+
+    *Standarzing variables:
+    foreach var of varlist NIVEL_LEC3 NIVEL_LEC6 {
+      encode `var', gen(`var'_n)
+    }
+    gen LOW_READING_PROFICIENCY = (NIVEL_LEC3_n > 2) & !missing(NIVEL_LEC3_n) if IDGRADE == 3
+    replace LOW_READING_PROFICIENCY = (NIVEL_LEC6_n >2) & !missing(NIVEL_LEC6_n) if IDGRADE == 6
+
+    *Creating variable for socio-economic variable
+    *Education of Parents:
+    foreach var of varlist DQFIT09_0* {
+      replace `var' = . if inlist(`var',7,9)
+    }
+    egen HIEDU= rowmax(DQFIT09_01 DQFIT09_02)
+    label values HIEDU DQFIT09_01
+
+    **Replacing missing values of HIEDU:
+    bysort IDCNTRY IDSCHOOL: egen HIEDU_mode = mode(HIEDU), maxmode
+    bysort IDCNTRY: egen HIEDU_mode_cnt = mode(HIEDU), maxmode
+    replace HIEDU = HIEDU_mode if missing(HIEDU)
+    replace HIEDU = HIEDU_mode_cnt if missing(HIEDU)
+
+    gen PAREMP = .
+    replace PAREMP = 3 if DQFIT10_01 == 1 | DQFIT10_02 == 1 // Atleast one parent working full time.
+    replace PAREMP = 4 if DQFIT10_01 == 1 & DQFIT10_02 == 1 // Both parents working full time.
+    replace PAREMP = 2 if DQFIT10_01 == 2 & DQFIT10_02 == 2 // Both parents working part time.
+    replace PAREMP = 1 if missing(PAREMP) // Other situations
+    replace PAREMP = . if inlist(DQFIT10_01,5,9) & inlist(DQFIT10_02,5,9)
+
+    *Generating HOMPEPOSSESSIONS INDEX:
+    foreach var of varlist DQFIT13 DQFIT14 DQFIT15* DQFIT16* DQFIT21 {
+      replace `var' = . if `var' == 9
+    }
+    *Generating variable for HOMEPOSS:
+    alphawgt DQFIT13 DQFIT14 DQFIT15* DQFIT16* DQFIT21 [weight = WGT], detail std item label
+
+    foreach var of varlist DQFIT13 DQFIT14 DQFIT15* DQFIT16* DQFIT21 {
+      bysort IDCNTRY IDSCHOOL: egen `var'_mean = mean(`var')
+      bysort IDCNTRY : egen `var'_mean_cnt = mean(`var')
+      replace `var' = `var'_mean if missing(`var')
+      replace `var' = `var'_mean_cnt if missing(`var')
+      egen `var'_std = std(`var')
+    }
+
+    pca DQFIT13_std DQFIT14_std DQFIT15*_std DQFIT16*_std DQFIT21_std [weight = WGT]
+    predict HOMEPOS
+
+    polychoricpca HIEDU HOMEPOS [weight = WGT], score(ESCS) nscore(1)
+    ren ESCS1 ESCS
+
+    bysort IDCNTRY IDSCHOOL IDGRADE: egen SCHESCS = mean(ESCS)
+    bysort IDCNTRY IDGRADE: egen CNTESCS = mean(ESCS)
+
+    *** QUICK FIX ****
+    rename *, lower
+    ******************
+	
+	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
+	* This is the variable used to compute results by Socio Economic Status
+	*<_qescs_>
+	tempvar cntrycode
+	sum idcntry_raw
+	if (`r(N)' != 0) {
+		tostring idcntry_raw, gen(`cntrycode')
+	}
+	else {
+		clonevar `cntrycode' = idcntry_raw
+	}
+	cap: sum qescs
+	if (_rc!=0) {
+		gen byte qescs = .
+		levelsof idgrade, local(grades)
+		levelsof `cntrycode', local(countries)
+		foreach country of local countries {
+			foreach grade of local grades {
+				capture drop qaux
+				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
+				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
+			}
+		}
+	}
+	*</_qescs_>
+
+	 *<_has_qescs_>
+	gen byte has_qescs = (qescs != .)
+	*</_has_qescs_>
 
     noi disp as res "{phang}Step 4 completed (`output_file'){p_end}"
 

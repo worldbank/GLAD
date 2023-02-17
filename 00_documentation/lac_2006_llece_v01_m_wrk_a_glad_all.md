@@ -16,26 +16,26 @@ master:      v01_M
 adaptation:  wrk_A_GLAD
 module:      ALL
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
-dofile_info: last modified by Diana Goldemberg in October 8, 2019
-lastsave:    9 Oct 2019 20:11:50 by wb552057
+dofile_info: last modified by Joao Pedro Azevedo in Feb 05, 2022
+lastsave:    6 Feb 2022 10:15:30 by wb255520
 ~~~~
 
 
-About the **27 variables** in this dataset:
+About the **70 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
-    idvars keyvars valuevars traitvars samplevars
+    idvars keyvars valuevars traitvars sesvars samplevars
 
 idvars:     idcntry_raw idschool idgrade idlearner
 keyvars:    surveyid countrycode national_level
-valuevars:  score_llece_read score_llece_math score_llece_science level_llece_read level_llece_math level_llece_science
-traitvars:  age urban male escs
-samplevars: strata learner_weight_read learner_weight_math learner_weight_science learner_weight_quest learner_weight
+valuevars:  score_llece_read score_llece_math score_llece_sci level_llece_read level_llece_math level_llece_sci
+traitvars:  age urban male qescs has_qescs
+sesvars: ses qses escs qescs nescs qnescs nnescs qnnescs escs_compute homepos_std homepos paredu_std hiedu homepos_o paredu roomspc floor nbooks electricity water sewage phone cabletv internet tv radio soundsystem videorec dvdorvhs computer cellphone refrigerator stove microwave washer dryer dishwasher moto auto
 
 
 Variable         Obs Unique       Mean        Min       Max  Label
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 idcntry_raw   196040     17   11.07802          1        21  Country ID, as coded in rawdata
 idschool      196040    231    90.7797          1       231  School ID
 idgrade       196040      2   4.458192          3         6  Grade ID
@@ -45,27 +45,61 @@ countrycode   196040     16          .          .         .  WB country code (3 
 national_l~l  196040      2   .9452357          0         1  Idcntry_raw is a national level
 score_llec~d  185091    329   511.3148  -48.33484  970.1854  Llece score for read
 score_llec~h  187996    841   507.9794  -55.01115   1135.41  Llece score for math
-score_llec~e   53979    337   508.8589  -68.76551   1188.77  Llece score for science
+score_llec~i   53979    337   508.8589  -68.76551   1188.77  Llece score for science
 level_llec~d  185091      5   2.255518          0         4  Llece level for read
 level_llec~h  187996      5   2.089656          0         4  Llece level for math
-level_llec~e   53979      5    1.80535          0         4  Llece level for science
+level_llec~i   53979      5    1.80535          0         4  Llece level for science
 age           185879     44   10.57118          4        50  Learner age at time of assessment
 urban         196040      2    .795251          0         1  School is located in urban/rural area
 male          187018      2   .5031387          0         1  Learner gender is male/female
-escs          186462 123696  -.0209971   -3.10078  2.428199  
-strata        196040     60   13886.47          2   4031503  Strata
-learner_we~d  185091   3800   113.3772          1  3390.208  Learner weight for read
-learner_we~h  187996   3777   111.6253          1  2089.599  Learner weight for math
-learner_we~e   53979   1076   53.83505          1  1192.513  Learner weight for science
-learner_w~st  196040   3483    107.045          1  2089.599  Learner weight for questionnaire
-learner_w~ht  185091   3800   113.3772          1  3390.208  Learner weight for read
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+qescs         186462      5   3.278496          1         5  Quintiles of Socio-Economic Status
+has_qescs     196040      2   .9511426          0         1  Dummy variable for observations with a valid QESCS
+ses           163969 128370   .0823761  -2.769182  2.726717  SES (single-step IRT)
+qses          163969      5   3.114699          1         5  Quintiles of SES
+escs          186462 123696  -.0209971   -3.10078  2.428199  ESCS (original in GLAD v01)
+qescs         186462      5   3.278496          1         5  Quintiles of Socio-Economic Status
+nescs         163958 108424   .2361926   -3.11257  3.122844  New ESCS (IRT + PCA)
+qnescs        163958      5   3.293789          1         5  Quintiles of New ESCS
+nnescs        163644 114365  -.0986269  -3.294554   2.61709  NN ESCS (IRT + polychoricPCA)
+qnnescs       163644      5   3.275335          1         5  Quintiles of NN ESCS
+escs_compute  196040      3   1.650612          0         2  Computation of ESCS
+homepos_std   163958  86185   .0876338  -2.711484  2.687616  Home possessions composite indicator (imp.std.)
+homepos       163644  85876   .0816731  -2.528949  2.506605  Home possessions composite indicator
+paredu_std    163958      5    .246393  -1.690355  1.728752  Parents' highest educational attainment (imp.std.)
+hiedu         186462      7   4.095258          1         7  Parents' highest educational attainment
+homepos_o     186462 102869   .2468049   -6.56064  6.164906  Scores for component 1
+paredu        159942      5   3.276807          1         5  Parents' highest educational attainment
+roomspc       130080      4       1.75          0         3  Rooms per household inhabitant
+floor         158657      4   2.482494          1         4  Floor material
+nbooks        160446      4   2.561179          1         4  Number of books at home
+electricity   160563      2   .9513275          0         1  Home has electricity
+water         156524      2   .8843117          0         1  Home is connected to public piped water
+sewage        143271      2   .7060745          0         1  Home is connected to sewage system
+phone         137984      2   .5618405          0         1  Telephone availability at home
+cabletv       130358      2   .3711088          0         1  Cable / Satellite TV service at home
+internet      120799      2   .1244547          0         1  Internet access at home
+tv            156753      2   .8669053          0         1  Has a color TV at home
+radio         149856      2   .8385383          0         1  Has a radio at home
+soundsystem   141573      2   .5939056          0         1  Has a sound system at home
+videorec      130316      2    .296157          0         1  Has a video recorder at home
+dvdorvhs      136509      2    .476247          0         1  Has a DVD or VHS at home
+computer      130256      2   .2831731          0         1  Has a computer at home
+cellphone     146698      2    .711598          0         1  Has a cellphone at home
+refrigerator  149397      2   .7778068          0         1  Has a refrigerator at home
+stove         151440      2   .8385565          0         1  Has a gas/electric stove at home
+microwave     131898      2   .3346146          0         1  Has a microwave at home
+washer        140989      2   .5794849          0         1  Has a washer machine at home
+dryer         127438      2   .1973587          0         1  Has a dryer machine at home
+dishwasher    124813      2   .0928189          0         1  Has a dishwasher at home
+moto          125244      2   .1450209          0         1  Has a moto at home
+auto          130246      2   .3070804          0         1  Has an auto at home
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Plus the variables merged-on-the-fly, which are:
 
 traitvars:  lp01_threshold_var lp01_threshold_val lp01_threshold_res
-valuevars:  hpro_read
+valuevars:  sdg411_read bmp_read fgt1_read fgt2_read
 ~~~~
 
 About the **196,040 observations** in this dataset:
@@ -113,7 +147,7 @@ WB country |
 
 ~~~~
 
-           hpro_read |      Freq.     Percent        Cum.
+         sdg411_read |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
       Non-proficient |     48,825       24.91       24.91
           Proficient |     41,646       21.24       46.15
@@ -122,13 +156,29 @@ Non-harmonized grade |    100,752       51.39      100.00
 ---------------------+-----------------------------------
                Total |    196,040      100.00
 
+            bmp_read |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |     41,646       21.24       21.24
+      Non-proficient |     48,825       24.91       46.15
+Non-harmonized grade |    105,569       53.85      100.00
+---------------------+-----------------------------------
+               Total |    196,040      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   fgt1_read |     48,825    .1503129    .1116938   .0003553   1.094099
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   fgt2_read |     48,825    .0350692    .0570742   1.26e-07   1.197052
+
 
 
      +--------------------------------------------------------+
      | idgrade   prefix               harmonization_condition |
      |--------------------------------------------------------|
   1. |       3     lp01                      no harmonization |
-  2. |       6     lp01   hpro_read = (level_llece_read >= 3) |
+  2. |       6     lp01   read = (score_llece_read >= 513.66) |
      +--------------------------------------------------------+
 
 ~~~~

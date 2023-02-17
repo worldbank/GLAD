@@ -16,77 +16,90 @@ master:      v01_M
 adaptation:  wrk_A_GLAD
 module:      CLO
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
-dofile_info: last modified by Diana Goldemberg in October 8, 2019
-lastsave:    9 Oct 2019 21:01:34 by wb552057
+dofile_info: last modified by Joao Pedro Azevedo in Feburary 5, 2022
+lastsave:    6 Feb 2022 11:16:08 by wb255520
 ~~~~
 
 
-About the **47 variables** in this dataset:
+About the **60 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
 idvars valuevars traitvars
 
-idvars:    countrycode idgrade subgroup
-valuevars: n_hpro_read m_hpro_read se_hpro_read n_score_sacmeq_read m_score_sacmeq_read se_score_sacmeq_read n_score_sacmeq_math m_score_sacmeq_math se_score_sacmeq_math m_d1level_sacmeq_read se_d1level_sacmeq_read m_d2level_sacmeq_read se_d2level_sacmeq_read m_d3level_sacmeq_read se_d3level_sacmeq_read m_d4level_sacmeq_read se_d4level_sacmeq_read m_d5level_sacmeq_read se_d5level_sacmeq_read m_d6level_sacmeq_read se_d6level_sacmeq_read m_d7level_sacmeq_read se_d7level_sacmeq_read m_d8level_sacmeq_read se_d8level_sacmeq_read m_d1level_sacmeq_math se_d1level_sacmeq_math m_d2level_sacmeq_math se_d2level_sacmeq_math m_d3level_sacmeq_math se_d3level_sacmeq_math m_d4level_sacmeq_math se_d4level_sacmeq_math m_d5level_sacmeq_math se_d5level_sacmeq_math m_d6level_sacmeq_math se_d6level_sacmeq_math m_d7level_sacmeq_math se_d7level_sacmeq_math m_d8level_sacmeq_math se_d8level_sacmeq_math
-traitvars: n_total n_male n_urban
+idvars:    assessment year countrycode idgrade subgroup
+valuevars: n_score_scmeq_read m_score_scmeq_read se_score_scmeq_read n_score_scmeq_math m_score_scmeq_math se_score_scmeq_math n_fgt1_read m_fgt1_read se_fgt1_read n_fgt2_read m_fgt2_read se_fgt2_read n_sdg411_read m_sdg411_read se_sdg411_read n_bmp_read m_bmp_read se_bmp_read m_d1level_scmeq_read se_d1level_scmeq_read m_d2level_scmeq_read se_d2level_scmeq_read m_d3level_scmeq_read se_d3level_scmeq_read m_d4level_scmeq_read se_d4level_scmeq_read m_d5level_scmeq_read se_d5level_scmeq_read m_d6level_scmeq_read se_d6level_scmeq_read m_d7level_scmeq_read se_d7level_scmeq_read m_d8level_scmeq_read se_d8level_scmeq_read m_d1level_scmeq_math se_d1level_scmeq_math m_d2level_scmeq_math se_d2level_scmeq_math m_d3level_scmeq_math se_d3level_scmeq_math m_d4level_scmeq_math se_d4level_scmeq_math m_d5level_scmeq_math se_d5level_scmeq_math m_d6level_scmeq_math se_d6level_scmeq_math m_d7level_scmeq_math se_d7level_scmeq_math m_d8level_scmeq_math se_d8level_scmeq_math
+traitvars: n_total n_male n_urban n_has_qescs n_qescs
 
 . codebook, compact
 
 Variable      Obs Unique      Mean       Min       Max  Label
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-countrycode    65     13         .         .         .  WB country code (3 letters)
-idgrade        65      1         6         6         6  Grade ID
-subgroup       65      5         .         .         .  Subgroups of countrycode idgrade
-n_hpro_read    65     63  1804.108       244      5048  Number of observations used to calculate m_hpro_read
-m_hpro_read    65     65  .4099636  .0344869  .8678353  Mean of hpro_read
-se_hpro_read   65     65  .0109769    .00344  .0297021  Standard error of m_hpro_read
-n_score_sa~d   65     63  1804.108       244      5048  Number of observations used to calculate m_score_sacmeq_read
-m_score_sa~d   65     65  503.0659  410.5696  614.2132  Mean of score_sacmeq_read
-se_score_s~d   65     65  2.231401  .8830173  7.694844  Standard error of m_score_sacmeq_read
-n_score_sa~h   65     62  1791.292       244      4990  Number of observations used to calculate m_score_sacmeq_math
-m_score_sa~h   65     65  502.8015  404.6862   591.299  Mean of score_sacmeq_math
-se_score_s~h   65     65  2.211922  1.013007  6.871566  Standard error of m_score_sacmeq_math
-m_d1level_~d   65     65  .0671134         0   .269041  Mean of d1level_sacmeq_read
-se_d1level~d   65     65  .0055916         0  .0127415  Standard error of m_d1level_sacmeq_read
-m_d2level_~d   65     65  .1483316  .0096179  .3757374  Mean of d2level_sacmeq_read
-se_d2level~d   65     65  .0080735  .0023145  .0172565  Standard error of m_d2level_sacmeq_read
-m_d3level_~d   65     65  .1792652   .020165  .3594898  Mean of d3level_sacmeq_read
-se_d3level~d   65     65  .0092591  .0053975  .0177359  Standard error of m_d3level_sacmeq_read
-m_d4level_~d   65     65  .1953262  .0974855  .3623223  Mean of d4level_sacmeq_read
-se_d4level~d   65     65  .0098868   .004934  .0204202  Standard error of m_d4level_sacmeq_read
-m_d5level_~d   65     65  .1657839   .027479   .332299  Mean of d5level_sacmeq_read
-se_d5level~d   65     65  .0089915  .0030648   .022479  Standard error of m_d5level_sacmeq_read
-m_d6level_~d   65     65  .1104287  .0054425  .2793967  Mean of d6level_sacmeq_read
-se_d6level~d   65     65  .0075459  .0014707  .0246867  Standard error of m_d6level_sacmeq_read
-m_d7level_~d   65     65  .0926687  .0006194  .3140986  Mean of d7level_sacmeq_read
-se_d7level~d   65     65  .0067022  .0006249  .0279381  Standard error of m_d7level_sacmeq_read
-m_d8level_~d   65     59  .0410822         0  .2192565  Mean of d8level_sacmeq_read
-se_d8level~d   65     59   .004217         0  .0200922  Standard error of m_d8level_sacmeq_read
-m_d1level_~h   65     65  .0628584  .0012415  .2463032  Mean of d1level_sacmeq_math
-se_d1level~h   65     65  .0052204  .0008563  .0112231  Standard error of m_d1level_sacmeq_math
-m_d2level_~h   65     65  .3349099  .0731239  .6544887  Mean of d2level_sacmeq_math
-se_d2level~h   65     65    .01102  .0052531  .0257061  Standard error of m_d2level_sacmeq_math
-m_d3level_~h   65     65  .2893629  .1022169  .4685386  Mean of d3level_sacmeq_math
-se_d3level~h   65     65  .0114495  .0050369  .0283527  Standard error of m_d3level_sacmeq_math
-m_d4level_~h   65     65  .1508238  .0073327   .334583  Mean of d4level_sacmeq_math
-se_d4level~h   65     65  .0085937  .0016075  .0273654  Standard error of m_d4level_sacmeq_math
-m_d5level_~h   65     65  .0785926  .0013103  .2229102  Mean of d5level_sacmeq_math
-se_d5level~h   65     65  .0062567  .0006816  .0187045  Standard error of m_d5level_sacmeq_math
-m_d6level_~h   65     60   .049277         0  .1676855  Mean of d6level_sacmeq_math
-se_d6level~h   65     60  .0048269         0  .0200919  Standard error of m_d6level_sacmeq_math
-m_d7level_~h   65     57  .0240947         0  .1113928  Mean of d7level_sacmeq_math
-se_d7level~h   65     57  .0031293         0  .0126688  Standard error of m_d7level_sacmeq_math
-m_d8level_~h   65     46  .0100808         0  .0893973  Mean of d8level_sacmeq_math
-se_d8level~h   65     46  .0018095         0  .0098949  Standard error of m_d8level_sacmeq_math
-n_total        65     13  3013.231      1484      5048  # learners, by countrycode idgrade
-n_male         65     12  1530.769       742      2462  # male learners, by countrycode idgrade
-n_urban        65     13  1318.615       675      2202  # urban learners, by countrycode idgrade
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+assessment    143      1         .         .         .  Assessment
+year          143      1      2000      2000      2000  Year of assessment
+countrycode   143     13         .         .         .  WB country code (3 letters)
+idgrade       143      1         6         6         6  Grade ID
+subgroup      143     11         .         .         .  Subgroups of countrycode idgrade
+n_score_sc~d  143    124  1367.909       244      5048  Number of observations used to calculate m_score_scmeq_read
+m_score_sc~d  143    130  503.2084  399.0543  645.3806  Mean of score_scmeq_read
+se_score_s~d  143    130  5.637254  1.912431  17.78431  Standard error of m_score_scmeq_read
+n_score_sc~h  143    123  1358.182       244      4990  Number of observations used to calculate m_score_scmeq_math
+m_score_sc~h  143    130  502.9929   400.808  693.7067  Mean of score_scmeq_math
+se_score_s~h  143    130  5.650923    1.7129  20.15922  Standard error of m_score_scmeq_math
+n_fgt1_read   143    123  833.5734        52      4075  Number of observations used to calculate m_fgt1_read
+m_fgt1_read   143    130  .1368245  .0645204  .2259067  Mean of fgt1_read
+se_fgt1_read  143    130  .0055341  .0025569  .0158337  Standard error of m_fgt1_read
+n_fgt2_read   143    123  833.5734        52      4075  Number of observations used to calculate m_fgt2_read
+m_fgt2_read   143    130  .0276281  .0071378  .0612196  Mean of fgt2_read
+se_fgt2_read  143    130  .0020228   .000543   .010982  Standard error of m_fgt2_read
+n_sdg411_r~d  143    124  1367.909       244      5048  Number of observations used to calculate m_sdg411_read
+m_sdg411_r~d  143    130  .4097213  .0220337  .8678353  Mean of sdg411_read
+se_sdg411_~d  143    130  .0242564  .0055312   .070446  Standard error of m_sdg411_read
+n_bmp_read    143    124  1367.909       244      5048  Number of observations used to calculate m_bmp_read
+m_bmp_read    143    130  .5902787  .1321647  .9779662  Mean of bmp_read
+se_bmp_read   143    130  .0242564  .0055312   .070446  Standard error of m_bmp_read
+m_d1level_~d  143    129  .0666514         0  .3270365  Mean of d1level_scmeq_read
+se_d1level~d  143    129  .0094354         0  .0280931  Standard error of m_d1level_scmeq_read
+m_d2level_~d  143    130  .1481983  .0040347  .4117451  Mean of d2level_scmeq_read
+se_d2level~d  143    130  .0140537  .0020521  .0397507  Standard error of m_d2level_scmeq_read
+m_d3level_~d  143    130  .1797422   .020165  .3688218  Mean of d3level_scmeq_read
+se_d3level~d  143    130  .0148909  .0057442  .0305985  Standard error of m_d3level_scmeq_read
+m_d4level_~d  143    130  .1956868  .0649922  .3969178  Mean of d4level_scmeq_read
+se_d4level~d  143    130  .0168295  .0077712  .0282776  Standard error of m_d4level_scmeq_read
+m_d5level_~d  143    130  .1657352  .0118576  .3458973  Mean of d5level_scmeq_read
+se_d5level~d  143    130  .0150129  .0044474  .0309705  Standard error of m_d5level_scmeq_read
+m_d6level_~d  143    130  .1099177  .0019424  .2855168  Mean of d6level_scmeq_read
+se_d6level~d  143    130  .0126413  .0013918  .0333246  Standard error of m_d6level_scmeq_read
+m_d7level_~d  143    129  .0921015         0  .3543918  Mean of d7level_scmeq_read
+se_d7level~d  143    129  .0122238         0  .0468024  Standard error of m_d7level_scmeq_read
+m_d8level_~d  143    105  .0419668         0  .3695433  Mean of d8level_scmeq_read
+se_d8level~d  143    104  .0081683         0   .062581  Standard error of m_d8level_scmeq_read
+m_d1level_~h  143    130  .0630673  .0012415  .2632818  Mean of d1level_scmeq_math
+se_d1level~h  143    130  .0086324   .001028  .0310593  Standard error of m_d1level_scmeq_math
+m_d2level_~h  143    130  .3347935  .0456244  .6544887  Mean of d2level_scmeq_math
+se_d2level~h  143    130  .0198402  .0094328   .039072  Standard error of m_d2level_scmeq_math
+m_d3level_~h  143    130  .2885623  .0997312  .4817314  Mean of d3level_scmeq_math
+se_d3level~h  143    130   .019432  .0077233  .0431299  Standard error of m_d3level_scmeq_math
+m_d4level_~h  143    130  .1505978  .0033651  .3473475  Mean of d4level_scmeq_math
+se_d4level~h  143    130  .0145618  .0019112  .0472704  Standard error of m_d4level_scmeq_math
+m_d5level_~h  143    128  .0787797         0  .2716838  Mean of d5level_scmeq_math
+se_d5level~h  143    128  .0109189         0  .0320997  Standard error of m_d5level_scmeq_math
+m_d6level_~h  143    116   .049637         0  .2521445  Mean of d6level_scmeq_math
+se_d6level~h  143    116  .0088636         0   .052583  Standard error of m_d6level_scmeq_math
+m_d7level_~h  143    101  .0241567         0  .1792045  Mean of d7level_scmeq_math
+se_d7level~h  143    101  .0059542         0  .0520047  Standard error of m_d7level_scmeq_math
+m_d8level_~h  143     79  .0104058         0  .2247314  Mean of d8level_scmeq_math
+se_d8level~h  143     79  .0029887         0  .0312622  Standard error of m_d8level_scmeq_math
+n_total       143     13  3013.231      1484      5048  # learners, by countrycode idgrade
+n_male        143     12  1530.769       742      2462  # male learners, by countrycode idgrade
+n_urban       143     13  1318.615       675      2202  # urban learners, by countrycode idgrade
+n_has_qescs   143     13  3013.231      1484      5048  # has_qescs learners, by countrycode idgrade
+n_qescs       143     13  8801.308      4359     16348  # qescs learners, by countrycode idgrade
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ~~~~
 
-About the **65      observations** in this dataset:
+About the **143     observations** in this dataset:
 
 ~~~~
 . tab countrycode idgrade
@@ -95,21 +108,21 @@ WB country |
    code (3 |  Grade ID
   letters) |         6 |     Total
 -----------+-----------+----------
-       BWA |         5 |         5 
-       KEN |         5 |         5 
-       LSO |         5 |         5 
-       MOZ |         5 |         5 
-       MUS |         5 |         5 
-       MWI |         5 |         5 
-       NAM |         5 |         5 
-       SWZ |         5 |         5 
-       SYC |         5 |         5 
-       TZA |         5 |         5 
-       UGA |         5 |         5 
-       ZAF |         5 |         5 
-       ZMB |         5 |         5 
+       BWA |        11 |        11 
+       KEN |        11 |        11 
+       LSO |        11 |        11 
+       MOZ |        11 |        11 
+       MUS |        11 |        11 
+       MWI |        11 |        11 
+       NAM |        11 |        11 
+       SWZ |        11 |        11 
+       SYC |        11 |        11 
+       TZA |        11 |        11 
+       UGA |        11 |        11 
+       ZAF |        11 |        11 
+       ZMB |        11 |        11 
 -----------+-----------+----------
-     Total |        65 |        65 
+     Total |       143 |       143 
 
 . 
 . tab subgroup
@@ -119,12 +132,18 @@ WB country |
 countrycode |
     idgrade |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-        all |         13       20.00       20.00
-     male=0 |         13       20.00       40.00
-     male=1 |         13       20.00       60.00
-    urban=0 |         13       20.00       80.00
-    urban=1 |         13       20.00      100.00
+        all |         13        9.09        9.09
+has_qescs=1 |         13        9.09       18.18
+     male=0 |         13        9.09       27.27
+     male=1 |         13        9.09       36.36
+    qescs=1 |         13        9.09       45.45
+    qescs=2 |         13        9.09       54.55
+    qescs=3 |         13        9.09       63.64
+    qescs=4 |         13        9.09       72.73
+    qescs=5 |         13        9.09       81.82
+    urban=0 |         13        9.09       90.91
+    urban=1 |         13        9.09      100.00
 ------------+-----------------------------------
-      Total |         65      100.00
+      Total |        143      100.00
 
 ~~~~

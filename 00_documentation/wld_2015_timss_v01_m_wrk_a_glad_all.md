@@ -16,12 +16,12 @@ master:      v01_M
 adaptation:  wrk_A_GLAD
 module:      ALL
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
-dofile_info: last modified by Diana Goldemberg in October 8, 2019
-lastsave:    9 Oct 2019 20:56:42 by wb552057
+dofile_info: last modified by Ahmed Raza in January 29, 2021
+lastsave:    26 Apr 2022 14:15:54 by wb255520
 ~~~~
 
 
-About the **77 variables** in this dataset:
+About the **109 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
@@ -29,13 +29,13 @@ The variables belong to the following variable classifications:
 
 idvars:     idcntry_raw idschool idgrade idclass idlearner
 keyvars:    surveyid countrycode national_level
-valuevars:  score_timss_math_01 score_timss_science_01 score_timss_math_02 score_timss_science_02 score_timss_math_03 score_timss_science_03 score_timss_math_04 score_timss_science_04 score_timss_math_05 score_timss_science_05 level_timss_math_01 level_timss_science_01 level_timss_math_02 level_timss_science_02 level_timss_math_03 level_timss_science_03 level_timss_math_04 level_timss_science_04 level_timss_math_05 level_timss_science_05
-traitvars:  age urban urban_o1 urban_o2 male escs
+valuevars:  score_timss_math_01 score_timss_scie_01 score_timss_math_02 score_timss_scie_02 score_timss_math_03 score_timss_scie_03 score_timss_math_04 score_timss_scie_04 score_timss_math_05 score_timss_scie_05 level_timss_math_01 level_timss_scie_01 level_timss_math_02 level_timss_scie_02 level_timss_math_03 level_timss_scie_03 level_timss_math_04 level_timss_scie_04 level_timss_math_05 level_timss_scie_05
+traitvars:  age urban urban_o1 urban_o2 male escs qescs has_qescs
 samplevars: learner_weight jkzone jkrep
 
 
 Variable         Obs Unique      Mean       Min       Max  Label
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 idcntry_raw   615394     64  1562.698        36     32001  Country ID, as coded in rawdata
 idschool      615394    558  112.0927         1       558  School ID
 idgrade       615394      4  5.954093         4         9  Grade ID
@@ -70,16 +70,18 @@ urban_o1      590940      8         .         .         .  Original variable of 
 urban_o2      590952      8         .         .         .  Original variable of urban: school is located in urban/rural area
 male          615394      2  .5045434         0         1  Learner gender is male/female
 escs          601359 104237  .4346882  -3.71852  2.391304  
+qescs         601359      5  2.575773         1         5  Quintiles of Socio-Economic Status
+has_qescs     615394      2  .9771935         0         1  Dummy variable for observations with a valid QESCS
 learner_we~t  615394  20032   73.4775         1  5599.053  Total learner weight
 jkzone        615394     75  37.45687         1        75  Jackknife zone
 jkrep         615394      2  .4996864         0         1  Jackknife replicate code
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Plus the variables merged-on-the-fly, which are:
 
 traitvars:  lp01_threshold_var lp02_threshold_var lp03_threshold_var lp04_threshold_var lp05_threshold_var lp06_threshold_var lp07_threshold_var lp08_threshold_var lp09_threshold_var lp10_threshold_var lp01_threshold_val lp02_threshold_val lp03_threshold_val lp04_threshold_val lp05_threshold_val lp06_threshold_val lp07_threshold_val lp08_threshold_val lp09_threshold_val lp10_threshold_val lp01_threshold_res lp02_threshold_res lp03_threshold_res lp04_threshold_res lp05_threshold_res lp06_threshold_res lp07_threshold_res lp08_threshold_res lp09_threshold_res lp10_threshold_res
-valuevars:  hpro_science_01 hpro_science_02 hpro_science_03 hpro_science_04 hpro_science_05 hpro_math_01 hpro_math_02 hpro_math_03 hpro_math_04 hpro_math_05
+valuevars:  sdg411_scie_01 bmp_scie_01 fgt1_scie_01 fgt2_scie_01 sdg411_scie_02 bmp_scie_02 fgt1_scie_02 fgt2_scie_02 sdg411_scie_03 bmp_scie_03 fgt1_scie_03 fgt2_scie_03 sdg411_scie_04 bmp_scie_04 fgt1_scie_04 fgt2_scie_04 sdg411_scie_05 bmp_scie_05 fgt1_scie_05 fgt2_scie_05 sdg411_math_01 bmp_math_01 fgt1_math_01 fgt2_math_01 sdg411_math_02 bmp_math_02 fgt1_math_02 fgt2_math_02 sdg411_math_03 bmp_math_03 fgt1_math_03 fgt2_math_03 sdg411_math_04 bmp_math_04 fgt1_math_04 fgt2_math_04 sdg411_math_05 bmp_math_05 fgt1_math_05 fgt2_math_05
 ~~~~
 
 About the **615,394 observations** in this dataset:
@@ -169,143 +171,288 @@ WB country |
 
 ~~~~
 
-     hpro_science_01 |      Freq.     Percent        Cum.
+      sdg411_scie_01 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     43,764        7.11        7.11
-          Proficient |    242,425       39.39       46.51
- Missing score/level |     44,015        7.15       53.66
-Non-harmonized grade |    285,190       46.34      100.00
----------------------+-----------------------------------
-               Total |    615,394      100.00
-
-     hpro_science_02 |      Freq.     Percent        Cum.
----------------------+-----------------------------------
-      Non-proficient |     44,716        7.27        7.27
-          Proficient |    241,473       39.24       46.51
- Missing score/level |     44,015        7.15       53.66
-Non-harmonized grade |    285,190       46.34      100.00
+      Non-proficient |    169,666       27.57       27.57
+          Proficient |    401,713       65.28       92.85
+ Missing score/level |     44,015        7.15      100.00
 ---------------------+-----------------------------------
                Total |    615,394      100.00
 
-     hpro_science_03 |      Freq.     Percent        Cum.
+         bmp_scie_01 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     44,660        7.26        7.26
-          Proficient |    241,529       39.25       46.51
- Missing score/level |     44,015        7.15       53.66
-Non-harmonized grade |    285,190       46.34      100.00
----------------------+-----------------------------------
-               Total |    615,394      100.00
-
-     hpro_science_04 |      Freq.     Percent        Cum.
----------------------+-----------------------------------
-      Non-proficient |     45,483        7.39        7.39
-          Proficient |    240,706       39.11       46.51
- Missing score/level |     44,015        7.15       53.66
-Non-harmonized grade |    285,190       46.34      100.00
+          Proficient |    401,713       65.28       65.28
+      Non-proficient |    169,666       27.57       92.85
+Non-harmonized grade |     44,015        7.15      100.00
 ---------------------+-----------------------------------
                Total |    615,394      100.00
 
-     hpro_science_05 |      Freq.     Percent        Cum.
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_scie_01 |    169,666    .1961009    .1558577   3.73e-06   .9894737
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_scie_01 |    169,666    .0627471    .0923531   1.39e-11   .9790582
+
+      sdg411_scie_02 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     43,904        7.13        7.13
-          Proficient |    242,285       39.37       46.51
- Missing score/level |     44,015        7.15       53.66
-Non-harmonized grade |    285,190       46.34      100.00
+      Non-proficient |    170,734       27.74       27.74
+          Proficient |    400,645       65.10       92.85
+ Missing score/level |     44,015        7.15      100.00
 ---------------------+-----------------------------------
                Total |    615,394      100.00
 
-        hpro_math_01 |      Freq.     Percent        Cum.
+         bmp_scie_02 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     65,749       10.68       10.68
-          Proficient |    264,455       42.97       53.66
-Non-harmonized grade |    285,190       46.34      100.00
----------------------+-----------------------------------
-               Total |    615,394      100.00
-
-        hpro_math_02 |      Freq.     Percent        Cum.
----------------------+-----------------------------------
-      Non-proficient |     65,966       10.72       10.72
-          Proficient |    264,238       42.94       53.66
-Non-harmonized grade |    285,190       46.34      100.00
+          Proficient |    400,645       65.10       65.10
+      Non-proficient |    170,734       27.74       92.85
+Non-harmonized grade |     44,015        7.15      100.00
 ---------------------+-----------------------------------
                Total |    615,394      100.00
 
-        hpro_math_03 |      Freq.     Percent        Cum.
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_scie_02 |    170,734    .1957155    .1555589   6.74e-07   .9894737
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_scie_02 |    170,734     .062503    .0925653   4.54e-13   .9790582
+
+      sdg411_scie_03 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     65,088       10.58       10.58
-          Proficient |    265,116       43.08       53.66
-Non-harmonized grade |    285,190       46.34      100.00
+      Non-proficient |    169,720       27.58       27.58
+          Proficient |    401,659       65.27       92.85
+ Missing score/level |     44,015        7.15      100.00
 ---------------------+-----------------------------------
                Total |    615,394      100.00
 
-        hpro_math_04 |      Freq.     Percent        Cum.
+         bmp_scie_03 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     66,133       10.75       10.75
-          Proficient |    264,071       42.91       53.66
-Non-harmonized grade |    285,190       46.34      100.00
----------------------+-----------------------------------
-               Total |    615,394      100.00
-
-        hpro_math_05 |      Freq.     Percent        Cum.
----------------------+-----------------------------------
-      Non-proficient |     66,096       10.74       10.74
-          Proficient |    264,108       42.92       53.66
-Non-harmonized grade |    285,190       46.34      100.00
+          Proficient |    401,659       65.27       65.27
+      Non-proficient |    169,720       27.58       92.85
+Non-harmonized grade |     44,015        7.15      100.00
 ---------------------+-----------------------------------
                Total |    615,394      100.00
 
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_scie_03 |    169,720    .1937953    .1549078   9.89e-07   .9894737
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_scie_03 |    169,720    .0615529    .0915939   9.79e-13   .9790582
+
+      sdg411_scie_04 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |    172,146       27.97       27.97
+          Proficient |    399,233       64.87       92.85
+ Missing score/level |     44,015        7.15      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+         bmp_scie_04 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    399,233       64.87       64.87
+      Non-proficient |    172,146       27.97       92.85
+Non-harmonized grade |     44,015        7.15      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_scie_04 |    172,146    .1973508    .1576327   3.00e-06   .9894737
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_scie_04 |    172,146    .0637953    .0948253   9.00e-12   .9790582
+
+      sdg411_scie_05 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |    169,455       27.54       27.54
+          Proficient |    401,924       65.31       92.85
+ Missing score/level |     44,015        7.15      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+         bmp_scie_05 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    401,924       65.31       65.31
+      Non-proficient |    169,455       27.54       92.85
+Non-harmonized grade |     44,015        7.15      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_scie_05 |    169,455    .1951409    .1557371   6.74e-07   .9894737
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_scie_05 |    169,455    .0623339    .0923529   4.54e-13   .9790582
+
+      sdg411_math_01 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |    204,209       33.18       33.18
+          Proficient |    411,185       66.82      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+         bmp_math_01 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    411,185       66.82       66.82
+      Non-proficient |    204,209       33.18      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_01 |    204,209    .1845075    .1386695   1.81e-06      .9875
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_01 |    204,209    .0532721    .0735799   3.28e-12   .9751562
+
+      sdg411_math_02 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |    203,608       33.09       33.09
+          Proficient |    411,786       66.91      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+         bmp_math_02 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    411,786       66.91       66.91
+      Non-proficient |    203,608       33.09      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_02 |    203,608    .1860864    .1396709   6.00e-07      .9875
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_02 |    203,608     .054136    .0746864   3.60e-13   .9751562
+
+      sdg411_math_03 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |    203,012       32.99       32.99
+          Proficient |    412,382       67.01      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+         bmp_math_03 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    412,382       67.01       67.01
+      Non-proficient |    203,012       32.99      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_03 |    203,012    .1854179    .1394196   9.75e-07   .9894737
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_03 |    203,012    .0538175    .0741885   9.51e-13   .9790582
+
+      sdg411_math_04 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |    204,843       33.29       33.29
+          Proficient |    410,551       66.71      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+         bmp_math_04 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    410,551       66.71       66.71
+      Non-proficient |    204,843       33.29      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_04 |    204,843    .1874023    .1406745   1.94e-06      .9875
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_04 |    204,843    .0549088    .0755686   3.75e-12   .9751562
+
+      sdg411_math_05 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |    203,951       33.14       33.14
+          Proficient |    411,443       66.86      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+         bmp_math_05 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    411,443       66.86       66.86
+      Non-proficient |    203,951       33.14      100.00
+---------------------+-----------------------------------
+               Total |    615,394      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_05 |    203,951    .1862674    .1398009   4.84e-07   .9806873
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_05 |    203,951    .0542397     .074583   2.34e-13   .9617476
 
 
-     +----------------------------------------------------------------------+
-     | idgrade   prefix                             harmonization_condition |
-     |----------------------------------------------------------------------|
-  1. |       4     lp01   hpro_science_01 = (score_timss_science_01 >= 400) |
-  2. |       4     lp02   hpro_science_02 = (score_timss_science_02 >= 400) |
-  3. |       4     lp03   hpro_science_03 = (score_timss_science_03 >= 400) |
-  4. |       4     lp04   hpro_science_04 = (score_timss_science_04 >= 400) |
-  5. |       4     lp05   hpro_science_05 = (score_timss_science_05 >= 400) |
-     |----------------------------------------------------------------------|
-  6. |       4     lp06         hpro_math_01 = (score_timss_math_01 >= 400) |
-  7. |       4     lp07         hpro_math_02 = (score_timss_math_02 >= 400) |
-  8. |       4     lp08         hpro_math_03 = (score_timss_math_03 >= 400) |
-  9. |       4     lp09         hpro_math_04 = (score_timss_math_04 >= 400) |
- 10. |       4     lp10         hpro_math_05 = (score_timss_math_05 >= 400) |
-     |----------------------------------------------------------------------|
- 11. |       5     lp01   hpro_science_01 = (score_timss_science_01 >= 400) |
- 12. |       5     lp02   hpro_science_02 = (score_timss_science_02 >= 400) |
- 13. |       5     lp03   hpro_science_03 = (score_timss_science_03 >= 400) |
- 14. |       5     lp04   hpro_science_04 = (score_timss_science_04 >= 400) |
- 15. |       5     lp05   hpro_science_05 = (score_timss_science_05 >= 400) |
-     |----------------------------------------------------------------------|
- 16. |       5     lp06         hpro_math_01 = (score_timss_math_01 >= 400) |
- 17. |       5     lp07         hpro_math_02 = (score_timss_math_02 >= 400) |
- 18. |       5     lp08         hpro_math_03 = (score_timss_math_03 >= 400) |
- 19. |       5     lp09         hpro_math_04 = (score_timss_math_04 >= 400) |
- 20. |       5     lp10         hpro_math_05 = (score_timss_math_05 >= 400) |
-     |----------------------------------------------------------------------|
- 21. |       8     lp01                                    no harmonization |
- 22. |       8     lp02                                    no harmonization |
- 23. |       8     lp03                                    no harmonization |
- 24. |       8     lp04                                    no harmonization |
- 25. |       8     lp05                                    no harmonization |
-     |----------------------------------------------------------------------|
- 26. |       8     lp06                                    no harmonization |
- 27. |       8     lp07                                    no harmonization |
- 28. |       8     lp08                                    no harmonization |
- 29. |       8     lp09                                    no harmonization |
- 30. |       8     lp10                                    no harmonization |
-     |----------------------------------------------------------------------|
- 31. |       9     lp01                                    no harmonization |
- 32. |       9     lp02                                    no harmonization |
- 33. |       9     lp03                                    no harmonization |
- 34. |       9     lp04                                    no harmonization |
- 35. |       9     lp05                                    no harmonization |
-     |----------------------------------------------------------------------|
- 36. |       9     lp06                                    no harmonization |
- 37. |       9     lp07                                    no harmonization |
- 38. |       9     lp08                                    no harmonization |
- 39. |       9     lp09                                    no harmonization |
- 40. |       9     lp10                                    no harmonization |
-     +----------------------------------------------------------------------+
+
+     +-----------------------------------------------------------+
+     | idgrade   prefix                  harmonization_condition |
+     |-----------------------------------------------------------|
+  1. |       4     lp01   scie_01 = (score_timss_scie_01 >= 400) |
+  2. |       4     lp02   scie_02 = (score_timss_scie_02 >= 400) |
+  3. |       4     lp03   scie_03 = (score_timss_scie_03 >= 400) |
+  4. |       4     lp04   scie_04 = (score_timss_scie_04 >= 400) |
+  5. |       4     lp05   scie_05 = (score_timss_scie_05 >= 400) |
+     |-----------------------------------------------------------|
+  6. |       4     lp06   math_01 = (score_timss_math_01 >= 400) |
+  7. |       4     lp07   math_02 = (score_timss_math_02 >= 400) |
+  8. |       4     lp08   math_03 = (score_timss_math_03 >= 400) |
+  9. |       4     lp09   math_04 = (score_timss_math_04 >= 400) |
+ 10. |       4     lp10   math_05 = (score_timss_math_05 >= 400) |
+     |-----------------------------------------------------------|
+ 11. |       5     lp01   scie_01 = (score_timss_scie_01 >= 400) |
+ 12. |       5     lp02   scie_02 = (score_timss_scie_02 >= 400) |
+ 13. |       5     lp03   scie_03 = (score_timss_scie_03 >= 400) |
+ 14. |       5     lp04   scie_04 = (score_timss_scie_04 >= 400) |
+ 15. |       5     lp05   scie_05 = (score_timss_scie_05 >= 400) |
+     |-----------------------------------------------------------|
+ 16. |       5     lp06   math_01 = (score_timss_math_01 >= 400) |
+ 17. |       5     lp07   math_02 = (score_timss_math_02 >= 400) |
+ 18. |       5     lp08   math_03 = (score_timss_math_03 >= 400) |
+ 19. |       5     lp09   math_04 = (score_timss_math_04 >= 400) |
+ 20. |       5     lp10   math_05 = (score_timss_math_05 >= 400) |
+     |-----------------------------------------------------------|
+ 21. |       8     lp01   scie_01 = (score_timss_scie_01 >= 475) |
+ 22. |       8     lp02   scie_02 = (score_timss_scie_02 >= 475) |
+ 23. |       8     lp03   scie_03 = (score_timss_scie_03 >= 475) |
+ 24. |       8     lp04   scie_04 = (score_timss_scie_04 >= 475) |
+ 25. |       8     lp05   scie_05 = (score_timss_scie_05 >= 475) |
+     |-----------------------------------------------------------|
+ 26. |       8     lp06   math_01 = (score_timss_math_01 >= 475) |
+ 27. |       8     lp07   math_02 = (score_timss_math_02 >= 475) |
+ 28. |       8     lp08   math_03 = (score_timss_math_03 >= 475) |
+ 29. |       8     lp09   math_04 = (score_timss_math_04 >= 475) |
+ 30. |       8     lp10   math_05 = (score_timss_math_05 >= 475) |
+     |-----------------------------------------------------------|
+ 31. |       9     lp01   scie_01 = (score_timss_scie_01 >= 475) |
+ 32. |       9     lp02   scie_02 = (score_timss_scie_02 >= 475) |
+ 33. |       9     lp03   scie_03 = (score_timss_scie_03 >= 475) |
+ 34. |       9     lp04   scie_04 = (score_timss_scie_04 >= 475) |
+ 35. |       9     lp05   scie_05 = (score_timss_scie_05 >= 475) |
+     |-----------------------------------------------------------|
+ 36. |       9     lp06   math_01 = (score_timss_math_01 >= 475) |
+ 37. |       9     lp07   math_02 = (score_timss_math_02 >= 475) |
+ 38. |       9     lp08   math_03 = (score_timss_math_03 >= 475) |
+ 39. |       9     lp09   math_04 = (score_timss_math_04 >= 475) |
+ 40. |       9     lp10   math_05 = (score_timss_math_05 >= 475) |
+     +-----------------------------------------------------------+
 
 ~~~~

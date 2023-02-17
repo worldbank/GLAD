@@ -48,3 +48,19 @@ strata* | sample | Strata | Numerical | LLECE, PASEC only
 jkzone | sample | Jackknife zone | Numerical | PIRLS, TIMSS, PASEC 2014 only
 jkrep | sample | Jackknife replicate code | Numerical | PIRLS, TIMSS, PASEC 2014 only
 weight_replicate* | sample | Replicate weight # | Numerical | PASEC 2014 only
+
+---
+
+## Variables specific to a single assessment or year
+
+Though the variable _learner_weight_ exist in all assessments, other sample-related variables vary across assessments.
+
+varname | value | varlabel| vartype | note
+-- | -- | -- | -- | --
+year | key | Year of assessment | Date | PASEC, EGRA only (when multi-year bundles)
+urban_o* | trait | Original variable of urban | Categorical | PIRLS, TIMSS, SACMEQ only (whenever available)
+learner_weight_subject* | sample | Total learner weight for specific subject | Numerical | LLECE only
+strata* | sample | Strata | Numerical | LLECE, PASEC only
+jkzone | sample | Jackknife zone | Numerical | PIRLS, TIMSS, PASEC 2014 only
+jkrep | sample | Jackknife replicate code | Numerical | PIRLS, TIMSS, PASEC 2014 only
+weight_replicate* | sample | Replicate weight # | Numerical | PASEC 2014 only
