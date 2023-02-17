@@ -4,8 +4,8 @@
 * Author: Kristoffer Bjarkefur
 *==============================================================================*
 
-cap program drop 	split_region_2_country
-program define	split_region_2_country, rclass
+cap program drop glad_split_region_2_country
+program define	 glad_split_region_2_country, rclass
 
   syntax , fname(string) floc(string) OVERWrite_files(numlist) regionfolder(string) masterfolder(string)
 
@@ -52,7 +52,9 @@ program define	split_region_2_country, rclass
 
 
         * Creates folder if not already exists
-        edukit_rmkdir, parent(${output}) newfolders(`country'/`cnt_surveyname'/`cnt_master_folder')
+        //edukit_rmkdir, parent(${output}) newfolders(`country'/`cnt_surveyname'/`cnt_master_folder'/Doc/Technical/Change_Logs)
+        //local doc_folder "`r(folder)'"
+        //edukit_rmkdir, parent(${output}) newfolders(`country'/`cnt_surveyname'/`cnt_folder'/Programs)
         edukit_rmkdir, parent(${output}) newfolders(`country'/`cnt_surveyname'/`cnt_folder'/Data/Harmonized)
         local output_folder "`r(folder)'"
 
