@@ -16,9 +16,9 @@
 * Metadata to be stored as 'char' in the resulting dataset (do NOT use ";" here)
 local adaptation  = "wrk_A_GLAD"
 local module_in   = "ALL"
-local module_out  = "ESCS"
+local module_out  = "CLO"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Diana Goldemberg in April 15, 2020"
+local dofile_info = "last modified by Alison Gilberto in June 9, 2022"
 *==============================================================================*
 
 
@@ -48,6 +48,7 @@ local time  = subinstr("$S_TIME",":","-",.)
 * surveys that are part of the surveys_to_process in the current run_switch
 
 * Loop over all surveys to process (ie: WLD_2001_PIRLS)
+
 noi foreach survey of global surveys_to_process {
 
   * Parsing region year and assessment from survey
@@ -55,18 +56,20 @@ noi foreach survey of global surveys_to_process {
   gettoken trash  aux_token  : aux_token, parse("_")
   gettoken year   aux_token  : aux_token, parse("_")
   gettoken trash  assessment : aux_token, parse("_")
-
+  
   * Finds the latest master vintage for this survey in 012_programs
   * which should also be the same as the latest master vintage in datalibweb
 
   * Starts by testing that v01_M exist, otherwise just log unfortunate survey and move on
-  cap confirm file "${clone}/01_harmonization/012_programs/`region'/`assessment'/`survey'_v01_M_`adaptation'_`module_in'.do"
+  cap noi confirm file "${clone}/01_harmonization/012_programs/`region'/`assessment'/`survey'_v01_M_`adaptation'_`module_in'.do"
+  
   if _rc != 0 {
     local str_to_log_`i_log' = "{phang}... skipped `survey' for v01_M was NOT found for this survey{p_end}"
     local ++i_log
   }
-
+	
   else {
+  
     * Starting from master 1 (we know it exists, or would not be in this else)
     local i_master = 1
     * Assumes next master may exist
@@ -104,6 +107,7 @@ noi foreach survey of global surveys_to_process {
     * Once ALL is no longer confused with ALL-BASE (changed to BASE), this could be improved
     local wrk_input_file   "`surveyid'_wrk_A_GLAD_`module_in'.dta"
     local v01_input_file   "`surveyid'_v01_A_GLAD_`module_in'.dta"
+    local v02_input_file   "`surveyid'_v02_A_GLAD_`module_in'.dta"  
 
     * If user does not have access to or chooses not to use datalibweb, point to GLAD location
     if $from_datalibweb_GLAD_02 == 0    local input_dir "${input}/`region'/`region'_`year'_`assessment'/"
@@ -116,17 +120,26 @@ noi foreach survey of global surveys_to_process {
       *---------------------------------------------------------------------------
       * 2) Open and check the GLAD dataset which is the input for CLO
       *---------------------------------------------------------------------------
+      
       noi disp as txt "{phang}start working on `output_file'...{p_end}"
 
-      * Open flexibly the GLAD dta from input_dir or datalibweb
+	  /*Comment_AR:
+	  Set this to original workflow to produce wrk. Discuss with JP on how to proceed with v01, and v02 in the 0222. 
+	  */
+      * Open flexibly the GLAD dta from input_dir or datalibweb  
       if $from_datalibweb_GLAD_02 == 1 {
-        noi edukit_datalibweb, d(country(`region') year(`year') type(GLAD) surveyid(`surveyid') filename(`v01_input_file') $shortcut_GLAD_02)
+      	if "`adaptation'"  == "wrk_A_GLAD" {
+         noi edukit_datalibweb, d(country(`region') year(`year') type(GLAD) surveyid(`surveyid') filename(`wrk_input_file') $shortcut_GLAD_02) 
+        }
+        if "`adaptation'"  == "v01_A_GLAD" {
+        	noi edukit_datalibweb, d(country(`region') year(`year') type(GLAD) surveyid(`surveyid') filename(`v02_input_file') $shortcut_GLAD_02)
+        }
         * Datalibweb quirck is changing the varname, so change back
         cap rename code countrycode
-        cap drop code year
+        cap drop code year 
       }
       else use "`input_dir'/`wrk_input_file'", clear
-
+        
       * Harmonization of proficiency on-the-fly, based on thresholds as CPI
       quietly glad_hpro_as_cpi
 
@@ -149,38 +162,39 @@ noi foreach survey of global surveys_to_process {
       local clo_description   "This dataset contains harmonized aggregated data from `assessment' `year' and is part of the Country Level Outcomes (CLO)"
       local metadata          "region `region'; year `year'; assessment `assessment'; master `master'; adaptation `adaptation'; module `module_out'; ttl_info `ttl_info'; dofile_info `dofile_info'; description `clo_description'"
 
+
       *---------------------------------------------------------------------------
       * 3) Calls the ADO that "collapses" glad microdata into CLO
       *---------------------------------------------------------------------------
-      * This line should be inside the GLAD, once it moves there, erase from here
-      if "`assessment'" == "SACMEQ" {
-        svyset idschool [pw = learner_weight], strata(strata) || _n
-      }
-
-      * Quintiles of ESCS
-      gen byte qescs = .
-      levelsof idgrade, local(grades)
-      levelsof countrycode, local(countries)
-      foreach country of local countries {
-        foreach grade of local grades {
-          capture drop qaux
-          capture xtile qaux = escs if countrycode == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
-          if _rc == 0 replace qescs = qaux if countrycode == "`country'" & idgrade == `grade'
-        }
-      }
-
-      gen byte has_qescs = (qescs != .)
-
       * This is the most important line in this do-file
       * Check the ado for more details on how this step is performed
       * The -groups- and -subgroups- options may be customized but only
       * recommended to change if you know exactly what you are doing
 	  * this code now creates bowth the SDG 4.1.1 indicator and its complement (BMP)
-
-	  noisily glad_microdata_to_clo, ass(`assessment') year(`year') ///
-          groups(countrycode idgrade) subgroups(male urban has_qescs qescs)         ///
-          dummy_vars(sdg411_* bmp_*) factor_vars(level_*) number_vars(score_* fgt1_* fgt2_*)
-
+	  * if PISA is selected, results are aggreagated at the COUNTRYLEVEL; for all others, 
+	  * results are presented by COUNTRY-GRADE.
+	  
+	  * select the ASSESSMENT grouping
+	  if inlist("`assessment'", "PISA") {
+		local groupvar "countrycode" 
+	  }
+	  else {
+		local groupvar "countrycode idgrade"
+	  }
+	  
+	  * generate CLOs
+	  if "`assessment'" == "AMPLB" {
+	      noisily glad_microdata_to_clo, ass(`assessment') year(`year') ///
+		  groups(`groupvar') subgroups(male urban has_qescs qescs)         ///
+		  dummy_vars(sdg411_* bmp_*) 
+	  }
+	  else {
+	      noisily glad_microdata_to_clo, ass(`assessment') year(`year') ///
+		  groups(`groupvar') subgroups(male urban has_qescs qescs)         ///
+		  dummy_vars(sdg411_* bmp_*) factor_vars(level_*) number_vars(score_* fgt1_* fgt2_*)
+	  }
+	  
+	 	  
       * Store locals returned from the ado
       local idvars    "`r(idvars)'"
       local valuevars "`r(valuevars)'"
