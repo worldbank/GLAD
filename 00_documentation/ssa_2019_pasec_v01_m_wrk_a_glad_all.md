@@ -1,6 +1,3 @@
-      - cap noi _dyntext `"`srcfile'"' `opargs', `stop' `embedimage' basedir("`destfile'")
-      = cap noi _dyntext `"dyntext_GLAD.txt"' ,   basedir("C:/Users/wb255520/GitHub/mytasks/GLAD-Production/00_documentation/ssa_2019_p
-> asec_v01_m_wrk_a_glad_all.md")
 Documentation of GLAD dataset
 =====================================================================
 
@@ -20,11 +17,11 @@ adaptation:  wrk_A_GLAD
 module:      ALL
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
 dofile_info: last modified by Alison Gilberto in May 14, 2021
-lastsave:    10 Jun 2021 22:09:08 by wb255520
+lastsave:    26 Apr 2022 13:54:12 by wb255520
 ~~~~
 
 
-About the **161 variables** in this dataset:
+About the **198 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
@@ -33,12 +30,12 @@ The variables belong to the following variable classifications:
 idvars:     idcntry_raw idschool idgrade idlearner
 keyvars:    surveyid countrycode national_level
 valuevars:  score_pasec_read_01 score_pasec_math_01 score_pasec_read_02 score_pasec_math_02 score_pasec_read_03 score_pasec_math_03 score_pasec_read_04 score_pasec_math_04 score_pasec_read_05 score_pasec_math_05 level_pasec_read_01 level_pasec_math_01 level_pasec_read_02 level_pasec_math_02 level_pasec_read_03 level_pasec_math_03 level_pasec_read_04 level_pasec_math_04 level_pasec_read_05 level_pasec_math_05
-traitvars:  age urban urban_o male escs
+traitvars:  age urban urban_o male escs qescs has_qescs
 samplevars: strata learner_weight jkzone jkrep weight_replicate1 weight_replicate2 weight_replicate3 weight_replicate4 weight_replicate5 weight_replicate6 weight_replicate7 weight_replicate8 weight_replicate9 weight_replicate10 weight_replicate11 weight_replicate12 weight_replicate13 weight_replicate14 weight_replicate15 weight_replicate16 weight_replicate17 weight_replicate18 weight_replicate19 weight_replicate20 weight_replicate21 weight_replicate22 weight_replicate23 weight_replicate24 weight_replicate25 weight_replicate26 weight_replicate27 weight_replicate28 weight_replicate29 weight_replicate30 weight_replicate31 weight_replicate32 weight_replicate33 weight_replicate34 weight_replicate35 weight_replicate36 weight_replicate37 weight_replicate38 weight_replicate39 weight_replicate40 weight_replicate41 weight_replicate42 weight_replicate43 weight_replicate44 weight_replicate45 weight_replicate46 weight_replicate47 weight_replicate48 weight_replicate49 weight_replicate50 weight_replicate51 weight_replicate52 weight_replicate53 weight_replicate54 weight_replicate55 weight_replicate56 weight_replicate57 weight_replicate58 weight_replicate59 weight_replicate60 weight_replicate61 weight_replicate62 weight_replicate63 weight_replicate64 weight_replicate65 weight_replicate66 weight_replicate67 weight_replicate68 weight_replicate69 weight_replicate70 weight_replicate71 weight_replicate72 weight_replicate73 weight_replicate74 weight_replicate75 weight_replicate76 weight_replicate77 weight_replicate78 weight_replicate79 weight_replicate80 weight_replicate81 weight_replicate82 weight_replicate83 weight_replicate84 weight_replicate85 weight_replicate86 weight_replicate87 weight_replicate88 weight_replicate89 weight_replicate90
 
 
 Variable        Obs Unique       Mean        Min       Max  Label
----------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 idcntry_raw   84867     14   7.551463          1        14  Country ID, as coded in rawdata
 idschool      84867   1189   64193.02      11001    231025  School ID
 idgrade       84867      2   4.966241          2         6  Grade ID
@@ -71,6 +68,8 @@ urban         82693      2    .403045          0         1  School is located in
 urban_o       81538      4          .          .         .  Original variable of urban: school is located in area described as
 male          84867      2   .5117773          0         1  Learner gender is male/female
 escs          62934   7274  -.0085786  -2.147879  3.086277  Standardized values of SES
+qescs         62934      5   2.833381          1         5  Quintiles of Socio-Economic Status
+has_qescs     84867      2   .7415603          0         1  Dummy variable for observations with a valid QESCS
 strata        84867     23   6.256649          1        23  Strata
 learner_we~t  84867   4343   144.3623   1.038651  7101.592  Learner weight
 jkzone        84867     90   34.63731          1        90  Jackknife zone
@@ -165,13 +164,13 @@ weight_re~87  62934   2830   76.77818          0  2496.526  Replicate weight 87
 weight_re~88  62934   2831   76.59672          0  2196.943  Replicate weight 88
 weight_re~89  62934   2832    76.6852          0  1404.296  Replicate weight 89
 weight_re~90  62934   2829   76.25764          0  1404.296  Replicate weight 90
----------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Plus the variables merged-on-the-fly, which are:
 
-traitvars:  lp01_threshold_var lp02_threshold_var lp03_threshold_var lp04_threshold_var lp05_threshold_var lp01_threshold_val lp02_threshold_val lp03_threshold_val lp04_threshold_val lp05_threshold_val lp01_threshold_res lp02_threshold_res lp03_threshold_res lp04_threshold_res lp05_threshold_res
-valuevars:  read_01 bmp_read_01 fgt1_read_01 fgt2_read_01 read_02 bmp_read_02 fgt1_read_02 fgt2_read_02 read_03 bmp_read_03 fgt1_read_03 fgt2_read_03 read_04 bmp_read_04 fgt1_read_04 fgt2_read_04 read_05 bmp_read_05 fgt1_read_05 fgt2_read_05
+traitvars:  lp01_threshold_var lp02_threshold_var lp03_threshold_var lp04_threshold_var lp05_threshold_var lp06_threshold_var lp07_threshold_var lp08_threshold_var lp09_threshold_var lp10_threshold_var lp01_threshold_val lp02_threshold_val lp03_threshold_val lp04_threshold_val lp05_threshold_val lp06_threshold_val lp07_threshold_val lp08_threshold_val lp09_threshold_val lp10_threshold_val lp01_threshold_res lp02_threshold_res lp03_threshold_res lp04_threshold_res lp05_threshold_res lp06_threshold_res lp07_threshold_res lp08_threshold_res lp09_threshold_res lp10_threshold_res
+valuevars:  sdg411_read_01 bmp_read_01 fgt1_read_01 fgt2_read_01 sdg411_read_02 bmp_read_02 fgt1_read_02 fgt2_read_02 sdg411_read_03 bmp_read_03 fgt1_read_03 fgt2_read_03 sdg411_read_04 bmp_read_04 fgt1_read_04 fgt2_read_04 sdg411_read_05 bmp_read_05 fgt1_read_05 fgt2_read_05 sdg411_math_01 bmp_math_01 fgt1_math_01 fgt2_math_01 sdg411_math_02 bmp_math_02 fgt1_math_02 fgt2_math_02 sdg411_math_03 bmp_math_03 fgt1_math_03 fgt2_math_03 sdg411_math_04 bmp_math_04 fgt1_math_04 fgt2_math_04 sdg411_math_05 bmp_math_05 fgt1_math_05 fgt2_math_05
 ~~~~
 
 About the **84,867  observations** in this dataset:
@@ -210,145 +209,254 @@ no observations
 
 ~~~~
 
-             read_01 |      Freq.     Percent        Cum.
+      sdg411_read_01 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     48,526       57.18       57.18
-          Proficient |     14,408       16.98       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+      Non-proficient |     60,903       71.76       71.76
+          Proficient |     23,964       28.24      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
          bmp_read_01 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-          Proficient |     14,408       16.98       16.98
-      Non-proficient |     48,526       57.18       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+          Proficient |     23,964       28.24       28.24
+      Non-proficient |     60,903       71.76      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt1_read_01 |     48,526    .2122576     .123613   8.44e-06   1.001563
+fgt1_read_01 |     60,903    .2006037    .1251177   8.19e-06   1.086167
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt2_read_01 |     48,526    .0603331    .0617671   7.13e-11   1.003128
+fgt2_read_01 |     60,903     .055896    .0631243   6.70e-11    1.17976
 
-             read_02 |      Freq.     Percent        Cum.
+      sdg411_read_02 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     48,462       57.10       57.10
-          Proficient |     14,472       17.05       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+      Non-proficient |     60,911       71.77       71.77
+          Proficient |     23,956       28.23      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
          bmp_read_02 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-          Proficient |     14,472       17.05       17.05
-      Non-proficient |     48,462       57.10       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+          Proficient |     23,956       28.23       28.23
+      Non-proficient |     60,911       71.77      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt1_read_02 |     48,462    .2127715    .1232876   4.49e-06   .9176033
+fgt1_read_02 |     60,911    .2007569    .1250677   4.49e-06   1.076624
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt2_read_02 |     48,462    .0604712    .0616465   2.01e-11   .8419958
+fgt2_read_02 |     60,911     .055945    .0634622   2.01e-11   1.159119
 
-             read_03 |      Freq.     Percent        Cum.
+      sdg411_read_03 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     48,499       57.15       57.15
-          Proficient |     14,435       17.01       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+      Non-proficient |     60,875       71.73       71.73
+          Proficient |     23,992       28.27      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
          bmp_read_03 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-          Proficient |     14,435       17.01       17.01
-      Non-proficient |     48,499       57.15       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+          Proficient |     23,992       28.27       28.27
+      Non-proficient |     60,875       71.73      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt1_read_03 |     48,499    .2124462    .1236525   3.34e-06   .9102849
+fgt1_read_03 |     60,875    .2006298    .1252908   3.34e-06   1.055168
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt2_read_03 |     48,499     .060423    .0616127   1.12e-11   .8286186
+fgt2_read_03 |     60,875    .0559499    .0634382   1.12e-11   1.113379
 
-             read_04 |      Freq.     Percent        Cum.
+      sdg411_read_04 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     48,594       57.26       57.26
-          Proficient |     14,340       16.90       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+      Non-proficient |     60,981       71.85       71.85
+          Proficient |     23,886       28.15      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
          bmp_read_04 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-          Proficient |     14,340       16.90       16.90
-      Non-proficient |     48,594       57.26       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+          Proficient |     23,886       28.15       28.15
+      Non-proficient |     60,981       71.85      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt1_read_04 |     48,594    .2120706    .1238536   3.28e-06   .9635969
+fgt1_read_04 |     60,981    .2003715    .1254746   3.28e-06   .9635969
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt2_read_04 |     48,594    .0603134    .0617683   1.07e-11   .9285191
+fgt2_read_04 |     60,981    .0558924    .0634149   1.07e-11   .9285191
 
-             read_05 |      Freq.     Percent        Cum.
+      sdg411_read_05 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      Non-proficient |     48,464       57.11       57.11
-          Proficient |     14,470       17.05       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+      Non-proficient |     60,859       71.71       71.71
+          Proficient |     24,008       28.29      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
          bmp_read_05 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-          Proficient |     14,470       17.05       17.05
-      Non-proficient |     48,464       57.11       74.16
-Non-harmonized grade |     21,933       25.84      100.00
+          Proficient |     24,008       28.29       28.29
+      Non-proficient |     60,859       71.71      100.00
 ---------------------+-----------------------------------
                Total |     84,867      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt1_read_05 |     48,464    .2128676    .1237609   5.59e-06   .8778664
+fgt1_read_05 |     60,859     .200886    .1254292   5.59e-06   1.097633
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
-fgt2_read_05 |     48,464     .060629    .0618622   3.13e-11   .7706495
+fgt2_read_05 |     60,859    .0560874    .0636298   3.13e-11   1.204798
+
+      sdg411_math_01 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |     62,083       73.15       73.15
+          Proficient |     22,784       26.85      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+         bmp_math_01 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |     22,784       26.85       26.85
+      Non-proficient |     62,083       73.15      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_01 |     62,083    .2127083    .1208882   7.02e-06   .9213619
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_01 |     62,083    .0598586    .0591309   4.93e-11   .8489077
+
+      sdg411_math_02 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |     62,166       73.25       73.25
+          Proficient |     22,701       26.75      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+         bmp_math_02 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |     22,701       26.75       26.75
+      Non-proficient |     62,166       73.25      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_02 |     62,166    .2127529    .1212609   .0000243   .9720647
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_02 |     62,166    .0599677    .0593414   5.89e-10   .9449099
+
+      sdg411_math_03 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |     62,233       73.33       73.33
+          Proficient |     22,634       26.67      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+         bmp_math_03 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |     22,634       26.67       26.67
+      Non-proficient |     62,233       73.33      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_03 |     62,233    .2123356    .1212464   .0000154   1.023216
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_03 |     62,233    .0597869    .0594572   2.37e-10   1.046971
+
+      sdg411_math_04 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |     62,156       73.24       73.24
+          Proficient |     22,711       26.76      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+         bmp_math_04 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |     22,711       26.76       26.76
+      Non-proficient |     62,156       73.24      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_04 |     62,156    .2128772    .1211768   .0000114   .9845824
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_04 |     62,156    .0600003    .0594351   1.30e-10   .9694026
+
+      sdg411_math_05 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+      Non-proficient |     62,152       73.23       73.23
+          Proficient |     22,715       26.77      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+         bmp_math_05 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |     22,715       26.77       26.77
+      Non-proficient |     62,152       73.23      100.00
+---------------------+-----------------------------------
+               Total |     84,867      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_math_05 |     62,152    .2128959    .1211935   3.25e-06   .9219244
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_math_05 |     62,152    .0600123    .0592644   1.06e-11   .8499445
 
 
 
      +-------------------------------------------------------------+
      | idgrade   prefix                    harmonization_condition |
      |-------------------------------------------------------------|
-  1. |       2     lp01                           no harmonization |
-  2. |       2     lp02                           no harmonization |
-  3. |       2     lp03                           no harmonization |
-  4. |       2     lp04                           no harmonization |
-  5. |       2     lp05                           no harmonization |
+  1. |       2     lp01     read_01 = (score_pasec_read_01 >= 540) |
+  2. |       2     lp02     read_02 = (score_pasec_read_02 >= 540) |
+  3. |       2     lp03     read_03 = (score_pasec_read_03 >= 540) |
+  4. |       2     lp04     read_04 = (score_pasec_read_04 >= 540) |
+  5. |       2     lp05     read_05 = (score_pasec_read_05 >= 540) |
      |-------------------------------------------------------------|
-  6. |       6     lp01   read_01 = (score_pasec_read_01 >= 595.1) |
-  7. |       6     lp02   read_02 = (score_pasec_read_02 >= 595.1) |
-  8. |       6     lp03   read_03 = (score_pasec_read_03 >= 595.1) |
-  9. |       6     lp04   read_04 = (score_pasec_read_04 >= 595.1) |
- 10. |       6     lp05   read_05 = (score_pasec_read_05 >= 595.1) |
+  6. |       2     lp06     math_01 = (score_pasec_math_01 >= 489) |
+  7. |       2     lp07     math_02 = (score_pasec_math_02 >= 489) |
+  8. |       2     lp08     math_03 = (score_pasec_math_03 >= 489) |
+  9. |       2     lp09     math_04 = (score_pasec_math_04 >= 489) |
+ 10. |       2     lp10     math_05 = (score_pasec_math_05 >= 489) |
+     |-------------------------------------------------------------|
+ 11. |       6     lp01   read_01 = (score_pasec_read_01 >= 595.1) |
+ 12. |       6     lp02   read_02 = (score_pasec_read_02 >= 595.1) |
+ 13. |       6     lp03   read_03 = (score_pasec_read_03 >= 595.1) |
+ 14. |       6     lp04   read_04 = (score_pasec_read_04 >= 595.1) |
+ 15. |       6     lp05   read_05 = (score_pasec_read_05 >= 595.1) |
+     |-------------------------------------------------------------|
+ 16. |       6     lp06   math_01 = (score_pasec_math_01 >= 609.6) |
+ 17. |       6     lp07   math_02 = (score_pasec_math_02 >= 609.6) |
+ 18. |       6     lp08   math_03 = (score_pasec_math_03 >= 609.6) |
+ 19. |       6     lp09   math_04 = (score_pasec_math_04 >= 609.6) |
+ 20. |       6     lp10   math_05 = (score_pasec_math_05 >= 609.6) |
      +-------------------------------------------------------------+
 
 ~~~~
-      - local error = _rc
-      - qui log close `mlogname'
-      = qui log close __000000

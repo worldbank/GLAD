@@ -1,6 +1,3 @@
-      - cap noi _dyntext `"`srcfile'"' `opargs', `stop' `embedimage' basedir("`destfile'")
-      = cap noi _dyntext `"dyntext_GLAD.txt"' ,   basedir("C:/Users/wb576985/Documents/GitHub/GLAD-Production/00_documentation/eap_2019
-> _sea-plm_v01_m_wrk_a_glad_all.md")
 Documentation of GLAD dataset
 =====================================================================
 
@@ -19,12 +16,12 @@ master:      v01_M
 adaptation:  wrk_A_GLAD
 module:      ALL
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
-dofile_info: last modified by Yi Ning Wong in Feb 14, 2021
-lastsave:    14 Jul 2021 16:32:57 by wb576985
+dofile_info: last modified by Joao Pedro Azevedo in Feb 05, 2022
+lastsave:    26 Apr 2022 13:52:38 by wb255520
 ~~~~
 
 
-About the **205 variables** in this dataset:
+About the **207 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
@@ -33,12 +30,12 @@ The variables belong to the following variable classifications:
 idvars:     idschool idgrade idclass idlearner
 keyvars:    surveyid countrycode national_level
 valuevars:  score_saplm_read_01 score_saplm_write_01 score_saplm_math_01 score_saplm_read_02 score_saplm_write_02 score_saplm_math_02 score_saplm_read_03 score_saplm_write_03 score_saplm_math_03 score_saplm_read_04 score_saplm_write_04 score_saplm_math_04 score_saplm_read_05 score_saplm_write_05 score_saplm_math_05 level_saplm_read_01 level_saplm_math_01 level_saplm_read_02 level_saplm_math_02 level_saplm_read_03 level_saplm_math_03 level_saplm_read_04 level_saplm_math_04 level_saplm_read_05 level_saplm_math_05
-traitvars:  age urban urban_o1 urban_o2 male escs
+traitvars:  age urban urban_o1 urban_o2 male escs qescs has_qescs
 samplevars: strata learner_weight weight_replicate1 weight_replicate2 weight_replicate3 weight_replicate4 weight_replicate5 weight_replicate6 weight_replicate7 weight_replicate8 weight_replicate9 weight_replicate10 weight_replicate11 weight_replicate12 weight_replicate13 weight_replicate14 weight_replicate15 weight_replicate16 weight_replicate17 weight_replicate18 weight_replicate19 weight_replicate20 weight_replicate21 weight_replicate22 weight_replicate23 weight_replicate24 weight_replicate25 weight_replicate26 weight_replicate27 weight_replicate28 weight_replicate29 weight_replicate30 weight_replicate31 weight_replicate32 weight_replicate33 weight_replicate34 weight_replicate35 weight_replicate36 weight_replicate37 weight_replicate38 weight_replicate39 weight_replicate40 weight_replicate41 weight_replicate42 weight_replicate43 weight_replicate44 weight_replicate45 weight_replicate46 weight_replicate47 weight_replicate48 weight_replicate49 weight_replicate50 weight_replicate51 weight_replicate52 weight_replicate53 weight_replicate54 weight_replicate55 weight_replicate56 weight_replicate57 weight_replicate58 weight_replicate59 weight_replicate60 weight_replicate61 weight_replicate62 weight_replicate63 weight_replicate64 weight_replicate65 weight_replicate66 weight_replicate67 weight_replicate68 weight_replicate69 weight_replicate70 weight_replicate71 weight_replicate72 weight_replicate73 weight_replicate74 weight_replicate75 weight_replicate76 weight_replicate77 weight_replicate78 weight_replicate79 weight_replicate80 weight_replicate81 weight_replicate82 weight_replicate83 weight_replicate84 weight_replicate85 weight_replicate86 weight_replicate87 weight_replicate88 weight_replicate89 weight_replicate90 weight_replicate91 weight_replicate92 weight_replicate93 weight_replicate94 weight_replicate95
 
 
 Variable        Obs Unique      Mean        Min       Max  Label
----------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 idschool      31200   1095  407.8029          2      1096  School ID
 idgrade       31200      1         5          5         5  Grade ID
 idclass       31200   1095  407.8029          2      1096  Class ID
@@ -77,6 +74,8 @@ urban_o1      31184      7         .          .         .  Original variable of 
 urban_o2      30680    724  846.6989          8     10708  Original variable of urban: population size of the school area
 male          31199      2  .5063944          0         1  Learner gender is male/female
 escs          31126  12156  2.32e-16  -3.286241  4.232243  Socioeconomic status: SEA-PLM
+qescs         31126      5  3.083339          1         5  Quintiles of Socio-Economic Status
+has_qescs     31200      2  .9976282          0         1  Dummy variable for observations with a valid QESCS
 strata        31200     18  5.372724          1        18  Strata
 learner_we~t  31200    869   174.307   8.318038  798.3182  Learner weight
 weight_re~e1  31200    866  174.4663          0  1350.987  Replicate weight 1
@@ -174,7 +173,7 @@ weight_re~92  31200    868  174.3074          0  798.3182  Replicate weight 92
 weight_re~93  31200    867  174.2992          0  798.3182  Replicate weight 93
 weight_re~94  31200    868  174.3223          0  798.3182  Replicate weight 94
 weight_re~95  31200    869  174.2999          0  798.3182  Replicate weight 95
----------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Plus the variables merged-on-the-fly, which are:
@@ -226,11 +225,11 @@ no observations
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_read_01 |     22,551    .1006931    .0593632   5.10e-06   .3672937
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_read_01 |     22,551    .0136629    .0139879   2.60e-11   .1349047
 
@@ -248,11 +247,11 @@ fgt2_read_01 |     22,551    .0136629    .0139879   2.60e-11   .1349047
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_read_02 |     22,507    .1009987    .0592989   8.00e-06   .3893347
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_read_02 |     22,507    .0137169    .0140383   6.40e-11   .1515815
 
@@ -270,11 +269,11 @@ fgt2_read_02 |     22,507    .0137169    .0140383   6.40e-11   .1515815
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_read_03 |     22,606    .1004689    .0596175   .0000265   .4034784
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_read_03 |     22,606    .0136481    .0140505   7.03e-10   .1627948
 
@@ -292,11 +291,11 @@ fgt2_read_03 |     22,606    .0136481    .0140505   7.03e-10   .1627948
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_read_04 |     22,557    .1009959    .0593935   7.86e-06   .3788422
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_read_04 |     22,557    .0137276    .0139574   6.17e-11   .1435214
 
@@ -314,11 +313,11 @@ fgt2_read_04 |     22,557    .0137276    .0139574   6.17e-11   .1435214
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_read_05 |     22,501    .1007751    .0591255   .0000238   .3666241
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_read_05 |     22,501    .0136513    .0138427   5.68e-10   .1344132
 
@@ -336,11 +335,11 @@ fgt2_read_05 |     22,501    .0136513    .0138427   5.68e-10   .1344132
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_math_01 |     20,558     .083117    .0519025   8.83e-07   .3529552
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_math_01 |     20,558    .0096022    .0107455   7.80e-13   .1245774
 
@@ -358,11 +357,11 @@ fgt2_math_01 |     20,558    .0096022    .0107455   7.80e-13   .1245774
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_math_02 |     20,517    .0836433    .0520617   .0000137   .3667073
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_math_02 |     20,517    .0097065    .0107776   1.87e-10   .1344742
 
@@ -380,11 +379,11 @@ fgt2_math_02 |     20,517    .0097065    .0107776   1.87e-10   .1344742
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_math_03 |     20,601    .0830194    .0519632   .0000248   .3932406
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_math_03 |     20,601    .0095923    .0107209   6.17e-10   .1546382
 
@@ -402,11 +401,11 @@ fgt2_math_03 |     20,601    .0095923    .0107209   6.17e-10   .1546382
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_math_04 |     20,576    .0836744     .052385   4.54e-06    .326903
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_math_04 |     20,576    .0097455    .0108162   2.06e-11   .1068656
 
@@ -424,11 +423,11 @@ fgt2_math_04 |     20,576    .0097455    .0108162   2.06e-11   .1068656
 ---------------------+-----------------------------------
                Total |     31,200      100.00
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt1_math_05 |     20,517    .0836017     .051931   .0000225   .3786218
 
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
+    Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
 fgt2_math_05 |     20,517    .0096859    .0106716   5.05e-10   .1433545
 
@@ -451,6 +450,3 @@ fgt2_math_05 |     20,517    .0096859    .0106716   5.05e-10   .1433545
      +-----------------------------------------------------------+
 
 ~~~~
-      - local error = _rc
-      - qui log close `mlogname'
-      = qui log close __000000

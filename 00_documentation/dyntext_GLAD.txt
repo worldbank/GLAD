@@ -133,7 +133,13 @@ tab countrycode idgrade if national_level==0
 <<dd_do: nocommands>>
 foreach valuevar of local onthefly_valuevars {
 	label var `valuevar' ""
-	tab `valuevar', m
+	qui unique `valuevar'
+	if (`r(unique)'<=15) {
+		tab `valuevar', m
+	}
+	else {
+		sum `valuevar'
+	}
 }
 <</dd_do>>
 
@@ -155,7 +161,10 @@ if "`onthefly_traitvars'" != "" {
 	tostring threshold_val, replace
 
 	* Concatenate the condition to be human readable
-	gen str harmonization_condition = threshold_res + " = (" + threshold_var + " >= " + threshold_val + ")"
+	cap: gen str harmonization_condition = threshold_res + " = (" + threshold_var + " >= " + string(threshold_val) + ")"
+	if _rc != 0 {
+		gen str harmonization_condition = threshold_res + " = (" + threshold_var + " >= " + threshold_val + ")"
+	}
 	replace harmonization_condition = "no harmonization" if harmonization_condition==" = ( >= .)"
 
 	* Drop original variables

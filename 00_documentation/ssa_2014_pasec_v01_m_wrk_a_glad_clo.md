@@ -16,63 +16,88 @@ master:      v01_M
 adaptation:  wrk_A_GLAD
 module:      CLO
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
-dofile_info: last modified by Diana Goldemberg in October 8, 2019
-lastsave:    9 Oct 2019 23:42:38 by wb552057
+dofile_info: last modified by Ahmed Raza in Feburary 2, 2022
+lastsave:    7 Feb 2022 07:34:27 by wb549384
 ~~~~
 
 
-About the **33 variables** in this dataset:
+About the **58 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
 idvars valuevars traitvars
 
-idvars:    countrycode idgrade subgroup
-valuevars: n_hpro_read m_hpro_read se_hpro_read n_score_pasec_read m_score_pasec_read se_score_pasec_read n_score_pasec_math m_score_pasec_math se_score_pasec_math m_d1level_pasec_read se_d1level_pasec_read m_d2level_pasec_read se_d2level_pasec_read m_d3level_pasec_read se_d3level_pasec_read m_d4level_pasec_read se_d4level_pasec_read m_d5level_pasec_read se_d5level_pasec_read m_d1level_pasec_math se_d1level_pasec_math m_d2level_pasec_math se_d2level_pasec_math m_d3level_pasec_math se_d3level_pasec_math m_d4level_pasec_math se_d4level_pasec_math
-traitvars: n_total n_male n_urban
+idvars:    assessment year countrycode idgrade subgroup
+valuevars: n_score_pasec_read m_score_pasec_read se_score_pasec_read n_score_pasec_math m_score_pasec_math se_score_pasec_math n_fgt1_read m_fgt1_read se_fgt1_read n_fgt1_math m_fgt1_math se_fgt1_math n_fgt2_read m_fgt2_read se_fgt2_read n_fgt2_math m_fgt2_math se_fgt2_math n_sdg411_read m_sdg411_read se_sdg411_read n_sdg411_math m_sdg411_math se_sdg411_math n_bmp_read m_bmp_read se_bmp_read n_bmp_math m_bmp_math se_bmp_math m_d1level_pasec_read se_d1level_pasec_read m_d2level_pasec_read se_d2level_pasec_read m_d3level_pasec_read se_d3level_pasec_read m_d4level_pasec_read se_d4level_pasec_read m_d5level_pasec_read se_d5level_pasec_read m_d1level_pasec_math se_d1level_pasec_math m_d2level_pasec_math se_d2level_pasec_math m_d3level_pasec_math se_d3level_pasec_math m_d4level_pasec_math se_d4level_pasec_math
+traitvars: n_total n_male n_urban n_has_qescs n_qescs
 
 . codebook, compact
 
 Variable      Obs Unique      Mean       Min       Max  Label
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-countrycode   100     10         .         .         .  WB country code (3 letters)
-idgrade       100      2         4         2         6  Grade ID
-subgroup      100      5         .         .         .  Subgroups of countrycode idgrade
-n_hpro_read    50     49    1872.4       300      3817  Number of observations used to calculate m_hpro_read
-m_hpro_read    50     50  .1556784  .0028763  .3919792  Mean of hpro_read
-se_hpro_read   50     50  .0172518  .0022349  .0347055  Standard error of m_hpro_read
-n_score_pa~d  100     97   1193.25        94      3817  Number of observations used to calculate m_score_pasec_read
-m_score_pa~d  100    100  495.9907  386.1915  667.8519  Mean of score_pasec_read
-se_score_p~d  100    100  7.038532  2.034705  16.73271  Standard error of m_score_pasec_read
-n_score_pa~h  100     97   1193.25        94      3817  Number of observations used to calculate m_score_pasec_math
-m_score_pa~h  100    100  496.5913  395.6778  623.9837  Mean of score_pasec_math
-se_score_p~h  100    100  7.154505  2.501515  14.43122  Standard error of m_score_pasec_math
-m_d1level_~d  100    100  .1098434  .0006798  .4586009  Mean of d1level_pasec_read
-se_d1level~d  100    100  .0217763  .0014935  .0758009  Standard error of m_d1level_pasec_read
-m_d2level_~d  100    100  .2680905  .0241841  .5315909  Mean of d2level_pasec_read
-se_d2level~d  100    100  .0309844  .0076426  .0893114  Standard error of m_d2level_pasec_read
-m_d3level_~d  100    100  .2833876  .1006237  .4315645  Mean of d3level_pasec_read
-se_d3level~d  100    100  .0300102  .0123279  .0912632  Standard error of m_d3level_pasec_read
-m_d4level_~d  100    100  .1930836  .0097185  .5398428  Mean of d4level_pasec_read
-se_d4level~d  100    100  .0242889  .0061461  .0765583  Standard error of m_d4level_pasec_read
-m_d5level_~d  100     99   .145595         0  .6958395  Mean of d5level_pasec_read
-se_d5level~d  100     99  .0200522         0  .0680446  Standard error of m_d5level_pasec_read
-m_d1level_~h  100     99  .2270572         0   .734545  Mean of d1level_pasec_math
-se_d1level~h  100     99   .027689         0  .0917645  Standard error of m_d1level_pasec_math
-m_d2level_~h  100    100  .3190014  .0248901  .5323702  Mean of d2level_pasec_math
-se_d2level~h  100    100  .0315845  .0095648  .1017949  Standard error of m_d2level_pasec_math
-m_d3level_~h  100    100   .273591  .0433769  .5230974  Mean of d3level_pasec_math
-se_d3level~h  100    100  .0301804  .0084315  .1057916  Standard error of m_d3level_pasec_math
-m_d4level_~h  100    100  .1803504  .0028334  .7805088  Mean of d4level_pasec_math
-se_d4level~h  100    100  .0241347  .0027363  .0652117  Standard error of m_d4level_pasec_math
-n_total       100     19   1994.75       732      3817  # learners, by countrycode idgrade
-n_male        100     20    1049.7       351      2006  # male learners, by countrycode idgrade
-n_urban       100     20   1334.85       187      2977  # urban learners, by countrycode idgrade
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+assessment    170      1         .         .         .  Assessment
+year          170      1      2014      2014      2014  Year of assessment
+countrycode   170     10         .         .         .  WB country code (3 letters)
+idgrade       170      2  4.588235         2         6  Grade ID
+subgroup      170     12         .         .         .  Subgroups of countrycode idgrade
+n_score_pa~d  170    146  1120.194       127      3817  Number of observations used to calculate m_score_pasec_read
+m_score_pa~d  170    150  501.6699  375.6826   652.027  Mean of score_pasec_read
+se_score_p~d  170    150  7.000301  2.034705  23.67357  Standard error of m_score_pasec_read
+n_score_pa~h  170    146  1120.194       127      3817  Number of observations used to calculate m_score_pasec_math
+m_score_pa~h  170    150  501.2248  382.3768  614.4366  Mean of score_pasec_math
+se_score_p~h  170    150  6.977146  2.663117  23.29032  Standard error of m_score_pasec_math
+n_fgt1_read   170    146     911.5        12      3133  Number of observations used to calculate m_fgt1_read
+m_fgt1_read   170    150  .1875588  .0724828  .3691847  Mean of fgt1_read
+se_fgt1_read  170    150  .0092181  .0029484  .0306688  Standard error of m_fgt1_read
+n_fgt1_math   169    145  885.9704        10      3374  Number of observations used to calculate m_fgt1_math
+m_fgt1_math   169    149  .1880309   .046576  .3733029  Mean of fgt1_math
+se_fgt1_math  169    149  .0099321  .0032528  .0406695  Standard error of m_fgt1_math
+n_fgt2_read   170    146     911.5        12      3133  Number of observations used to calculate m_fgt2_read
+m_fgt2_read   170    150   .050014  .0087163  .1483503  Mean of fgt2_read
+se_fgt2_read  170    150  .0041148  .0009467  .0176917  Standard error of m_fgt2_read
+n_fgt2_math   169    145  885.9704        10      3374  Number of observations used to calculate m_fgt2_math
+m_fgt2_math   169    149  .0516554  .0035482   .151353  Mean of fgt2_math
+se_fgt2_math  169    149  .0045167     .0009  .0253511  Standard error of m_fgt2_math
+n_sdg411_r~d  170    146  1120.194       127      3817  Number of observations used to calculate m_sdg411_read
+m_sdg411_r~d  170    150  .2170961  .0012132  .8894027  Mean of sdg411_read
+se_sdg411_~d  170    150  .0270814   .001291  .0751394  Standard error of m_sdg411_read
+n_sdg411_m~h  170    146  1120.194       127      3817  Number of observations used to calculate m_sdg411_math
+m_sdg411_m~h  170    150    .28545   .001409  .9836816  Mean of sdg411_math
+se_sdg411_~h  170    150  .0263488  .0014588   .080871  Standard error of m_sdg411_math
+n_bmp_read    170    146  1120.194       127      3817  Number of observations used to calculate m_bmp_read
+m_bmp_read    170    150  .7829039  .1105973  .9987868  Mean of bmp_read
+se_bmp_read   170    150  .0270814   .001291  .0751394  Standard error of m_bmp_read
+n_bmp_math    170    146  1120.194       127      3817  Number of observations used to calculate m_bmp_math
+m_bmp_math    170    150    .71455  .0163184  .9985909  Mean of bmp_math
+se_bmp_math   170    150  .0263488  .0014588   .080871  Standard error of m_bmp_math
+m_d1level_~d  170    150  .0961054         0  .4375507  Mean of d1level_pasec_read
+se_d1level~d  170    150  .0188638         0  .0850811  Standard error of m_d1level_pasec_read
+m_d2level_~d  170    150  .2405543  .0196748  .4923404  Mean of d2level_pasec_read
+se_d2level~d  170    150  .0280434  .0076426  .0655087  Standard error of m_d2level_pasec_read
+m_d3level_~d  170    150  .2800333  .0896961  .4398182  Mean of d3level_pasec_read
+se_d3level~d  170    150  .0295364  .0123279   .084384  Standard error of m_d3level_pasec_read
+m_d4level_~d  170    150   .218131  .0193998  .5398428  Mean of d4level_pasec_read
+se_d4level~d  170    150  .0259468  .0070226    .06104  Standard error of m_d4level_pasec_read
+m_d5level_~d  170    150   .165176  .0012132  .6900674  Mean of d5level_pasec_read
+se_d5level~d  170    150  .0224155   .001291  .0660503  Standard error of m_d5level_pasec_read
+m_d1level_~h  170    149  .2296349         0  .8014793  Mean of d1level_pasec_math
+se_d1level~h  170    149  .0267111         0  .0825713  Standard error of m_d1level_pasec_math
+m_d2level_~h  170    150  .3135904  .0163184   .516813  Mean of d2level_pasec_math
+se_d2level~h  170    150  .0300646  .0095648  .0649618  Standard error of m_d2level_pasec_math
+m_d3level_~h  170    150   .276576  .0239682  .5230974  Mean of d3level_pasec_math
+se_d3level~h  170    150  .0294279  .0075032  .0627227  Standard error of m_d3level_pasec_math
+m_d4level_~h  170    150  .1801987   .001409  .7495074  Mean of d4level_pasec_math
+se_d4level~h  170    150  .0242356  .0014588  .0727565  Standard error of m_d4level_pasec_math
+n_total       170     19  2326.088       732      3817  # learners, by countrycode idgrade
+n_male        170     20  1227.965       351      2006  # male learners, by countrycode idgrade
+n_urban       170     20  819.4353       127      1576  # urban learners, by countrycode idgrade
+n_has_qescs   170     11  2019.665         0      3817  # has_qescs learners, by countrycode idgrade
+n_qescs       170     11  5717.735         0     11222  # qescs learners, by countrycode idgrade
+--------------------------------------------------------------------------------------------------------------------
 
 ~~~~
 
-About the **100     observations** in this dataset:
+About the **170     observations** in this dataset:
 
 ~~~~
 . tab countrycode idgrade
@@ -81,18 +106,18 @@ WB country |
    code (3 |       Grade ID
   letters) |         2          6 |     Total
 -----------+----------------------+----------
-       BDI |         5          5 |        10 
-       BEN |         5          5 |        10 
-       BFA |         5          5 |        10 
-       CIV |         5          5 |        10 
-       CMR |         5          5 |        10 
-       COG |         5          5 |        10 
-       NER |         5          5 |        10 
-       SEN |         5          5 |        10 
-       TCD |         5          5 |        10 
-       TGO |         5          5 |        10 
+       BDI |         6         11 |        17 
+       BEN |         6         11 |        17 
+       BFA |         6         11 |        17 
+       CIV |         6         11 |        17 
+       CMR |         6         11 |        17 
+       COG |         6         11 |        17 
+       NER |         6         11 |        17 
+       SEN |         6         11 |        17 
+       TCD |         6         11 |        17 
+       TGO |         6         11 |        17 
 -----------+----------------------+----------
-     Total |        50         50 |       100 
+     Total |        60        110 |       170 
 
 . 
 . tab subgroup
@@ -102,12 +127,19 @@ WB country |
 countrycode |
     idgrade |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-        all |         20       20.00       20.00
-     male=0 |         20       20.00       40.00
-     male=1 |         20       20.00       60.00
-    urban=0 |         20       20.00       80.00
-    urban=1 |         20       20.00      100.00
+        all |         20       11.76       11.76
+has_qescs=0 |         10        5.88       17.65
+has_qescs=1 |         10        5.88       23.53
+     male=0 |         20       11.76       35.29
+     male=1 |         20       11.76       47.06
+    qescs=1 |         10        5.88       52.94
+    qescs=2 |         10        5.88       58.82
+    qescs=3 |         10        5.88       64.71
+    qescs=4 |         10        5.88       70.59
+    qescs=5 |         10        5.88       76.47
+    urban=0 |         20       11.76       88.24
+    urban=1 |         20       11.76      100.00
 ------------+-----------------------------------
-      Total |        100      100.00
+      Total |        170      100.00
 
 ~~~~

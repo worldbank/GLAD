@@ -16,78 +16,91 @@ master:      v01_M
 adaptation:  wrk_A_GLAD
 module:      CLO
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
-dofile_info: last modified by Diana Goldemberg in October 8, 2019
-lastsave:    9 Oct 2019 21:00:56 by wb552057
+dofile_info: last modified by Joao Pedro Azevedo in Feburary 5, 2022
+lastsave:    6 Feb 2022 11:08:32 by wb255520
 ~~~~
 
 
-About the **48 variables** in this dataset:
+About the **61 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
 idvars valuevars traitvars
 
-idvars:    countrycode idgrade subgroup
-valuevars: n_hpro_read m_hpro_read se_hpro_read n_score_llece_read m_score_llece_read se_score_llece_read n_score_llece_math m_score_llece_math se_score_llece_math n_score_llece_science m_score_llece_science se_score_llece_science m_d1level_llece_read se_d1level_llece_read m_d2level_llece_read se_d2level_llece_read m_d3level_llece_read se_d3level_llece_read m_d4level_llece_read se_d4level_llece_read m_d5level_llece_read se_d5level_llece_read m_d1level_llece_math se_d1level_llece_math m_d2level_llece_math se_d2level_llece_math m_d3level_llece_math se_d3level_llece_math m_d4level_llece_math se_d4level_llece_math m_d5level_llece_math se_d5level_llece_math m_d1level_llece_science se_d1level_llece_science m_d2level_llece_science se_d2level_llece_science m_d3level_llece_science se_d3level_llece_science m_d4level_llece_science se_d4level_llece_science m_d5level_llece_science se_d5level_llece_science
-traitvars: n_total n_male n_urban
+idvars:    assessment year countrycode idgrade subgroup
+valuevars: n_score_llece_read m_score_llece_read se_score_llece_read n_score_llece_math m_score_llece_math se_score_llece_math n_score_llece_sci m_score_llece_sci se_score_llece_sci n_fgt1_read m_fgt1_read se_fgt1_read n_fgt2_read m_fgt2_read se_fgt2_read n_sdg411_read m_sdg411_read se_sdg411_read n_bmp_read m_bmp_read se_bmp_read m_d1level_llece_read se_d1level_llece_read m_d2level_llece_read se_d2level_llece_read m_d3level_llece_read se_d3level_llece_read m_d4level_llece_read se_d4level_llece_read m_d5level_llece_read se_d5level_llece_read m_d1level_llece_math se_d1level_llece_math m_d2level_llece_math se_d2level_llece_math m_d3level_llece_math se_d3level_llece_math m_d4level_llece_math se_d4level_llece_math m_d5level_llece_math se_d5level_llece_math m_d1level_llece_sci se_d1level_llece_sci m_d2level_llece_sci se_d2level_llece_sci m_d3level_llece_sci se_d3level_llece_sci m_d4level_llece_sci se_d4level_llece_sci m_d5level_llece_sci se_d5level_llece_sci
+traitvars: n_total n_male n_urban n_has_qescs n_qescs
 
 . codebook, compact
 
 Variable      Obs Unique      Mean       Min       Max  Label
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-countrycode   150     15         .         .         .  WB country code (3 letters)
-idgrade       150      2       4.5         3         6  Grade ID
-subgroup      150      5         .         .         .  Subgroups of countrycode idgrade
-n_hpro_read   150     75  842.9733         0      3765  Number of observations used to calculate m_hpro_read
-m_hpro_read    75     75  .4366038  .1143826  .7306223  Mean of hpro_read
-se_hpro_read   75     75  .0124948  .0078515  .0320792  Standard error of m_hpro_read
-n_score_ll~d  150    144   1631.24       217      3765  Number of observations used to calculate m_score_llece_read
-m_score_ll~d  150    150   505.122  432.1596  576.5664  Mean of score_llece_read
-se_score_l~d  150    150  2.031248   1.18579  5.034948  Standard error of m_score_llece_read
-n_score_ll~h  150    142  1227.053       166      3111  Number of observations used to calculate m_score_llece_math
-m_score_ll~h  150    150  513.2141  433.3111  579.0276  Mean of score_llece_math
-se_score_l~h  150    150  2.368862  1.430957  6.834204  Standard error of m_score_llece_math
-n_score_ll~e  150     75  619.7667         0      3038  Number of observations used to calculate m_score_llece_science
-m_score_ll~e   75     75  495.4875  441.1458  569.8257  Mean of score_llece_science
-se_score_l~e   75     75  2.735562  1.673311  7.545652  Standard error of m_score_llece_science
-m_d1level_~d  150    144   .020905         0  .1329696  Mean of d1level_llece_read
-se_d1level~d  150    144  .0032425         0  .0130714  Standard error of m_d1level_llece_read
-m_d2level_~d  150    150  .2107087  .0461342  .4873517  Mean of d2level_llece_read
-se_d2level~d  150    150  .0105017  .0039927  .0255012  Standard error of m_d2level_llece_read
-m_d3level_~d  150    150  .3984947  .2216613  .4993167  Mean of d3level_llece_read
-se_d3level~d  150    150  .0131212  .0073808  .0312423  Standard error of m_d3level_llece_read
-m_d4level_~d  150    150  .2733609  .0648739  .4921224  Mean of d4level_llece_read
-se_d4level~d  150    150  .0116987  .0061769      .034  Standard error of m_d4level_llece_read
-m_d5level_~d  150    150  .0965308  .0063656  .3837621  Mean of d5level_llece_read
-se_d5level~d  150    150  .0070158  .0017722  .0260713  Standard error of m_d5level_llece_read
-m_d1level_~h  150    144  .0259417         0  .1630812  Mean of d1level_llece_math
-se_d1level~h  150    144  .0042572         0  .0173479  Standard error of m_d1level_llece_math
-m_d2level_~h  150    150  .2253034  .0136216  .5467032  Mean of d2level_llece_math
-se_d2level~h  150    150  .0120362  .0026845  .0326419  Standard error of m_d2level_llece_math
-m_d3level_~h  150    150  .3853826  .2245055  .5747712  Mean of d3level_llece_math
-se_d3level~h  150    150  .0149957   .008454  .0365152  Standard error of m_d3level_llece_math
-m_d4level_~h  150    150  .2659402  .0548579  .5379046  Mean of d4level_llece_math
-se_d4level~h  150    150  .0130246  .0063379  .0341608  Standard error of m_d4level_llece_math
-m_d5level_~h  150    150  .0974322  .0016007   .320646  Mean of d5level_llece_math
-se_d5level~h  150    150  .0084781  .0012598  .0363345  Standard error of m_d5level_llece_math
-m_d1level_~e   75     75  .0528872  .0066854  .1486914  Mean of d1level_llece_science
-se_d1level~e   75     75  .0067925  .0026537  .0260873  Standard error of m_d1level_llece_science
-m_d2level_~e   75     75  .3682144  .1949334  .5803256  Mean of d2level_llece_science
-se_d2level~e   75     75  .0146871  .0085573  .0323903  Standard error of m_d2level_llece_science
-m_d3level_~e   75     75  .4275792  .2842136  .5418925  Mean of d3level_llece_science
-se_d3level~e   75     75  .0152781  .0090273  .0360859  Standard error of m_d3level_llece_science
-m_d4level_~e   75     75  .1379429   .021973   .429757  Mean of d4level_llece_science
-se_d4level~e   75     75   .010305  .0042398   .036009  Standard error of m_d4level_llece_science
-m_d5level_~e   75     74  .0133762         0  .0481404  Mean of d5level_llece_science
-se_d5level~e   75     74  .0031601         0  .0085282  Standard error of m_d5level_llece_science
-n_total       150     30    3998.9      2825      5211  # learners, by countrycode idgrade
-n_male        150     29    1923.2      1360      2654  # male learners, by countrycode idgrade
-n_urban       150     30    2576.6      1422      4010  # urban learners, by countrycode idgrade
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+assessment    360      1         .         .         .  Assessment
+year          360      1      2013      2013      2013  Year of assessment
+countrycode   360     15         .         .         .  WB country code (3 letters)
+idgrade       360      2       4.5         3         6  Grade ID
+subgroup      360     12         .         .         .  Subgroups of countrycode idgrade
+n_score_ll~d  330    275  1239.176       217      3765  Number of observations used to calculate m_score_llece_read
+m_score_ll~d  330    300  506.0738  423.2692  598.0381  Mean of score_llece_read
+se_score_l~d  330    300  4.475113  2.259209  13.04247  Standard error of m_score_llece_read
+n_score_ll~h  360    327  1124.517       184      3989  Number of observations used to calculate m_score_llece_math
+m_score_ll~h  360    360  514.0733  421.5004  614.4813  Mean of score_llece_math
+se_score_l~h  360    360  5.148418  2.127069  18.04992  Standard error of m_score_llece_math
+n_score_ll~i  180    168  1114.194       238      3893  Number of observations used to calculate m_score_llece_sci
+m_score_ll~i  180    180  497.9386  423.5757  584.4591  Mean of score_llece_sci
+se_score_l~i  180    180  5.390658   2.50539   33.5178  Standard error of m_score_llece_sci
+n_fgt1_read   165    137  674.1273        61      2243  Number of observations used to calculate m_fgt1_read
+m_fgt1_read   165    150  .1319128  .0804748  .2137951  Mean of fgt1_read
+se_fgt1_read  165    150  .0063648   .003059  .0203101  Standard error of m_fgt1_read
+n_fgt2_read   165    137  674.1273        61      2243  Number of observations used to calculate m_fgt2_read
+m_fgt2_read   165    150   .026608  .0115237  .0594803  Mean of fgt2_read
+se_fgt2_read  165    150  .0022972  .0010916  .0075518  Standard error of m_fgt2_read
+n_sdg411_r~d  165    142  1278.691       242      3765  Number of observations used to calculate m_sdg411_read
+m_sdg411_r~d  165    150  .4443418  .0970829  .8431447  Mean of sdg411_read
+se_sdg411_~d  165    150  .0253839  .0122378   .104006  Standard error of m_sdg411_read
+n_bmp_read    165    142  1278.691       242      3765  Number of observations used to calculate m_bmp_read
+m_bmp_read    165    150  .5556582  .1568554  .9029171  Mean of bmp_read
+se_bmp_read   165    150  .0253839  .0122378   .104006  Standard error of m_bmp_read
+m_d1level_~d  330    270  .0206843         0  .1543626  Mean of d1level_llece_read
+se_d1level~d  330    270  .0058011         0  .0382792  Standard error of m_d1level_llece_read
+m_d2level_~d  330    300  .2075643  .0175234  .5037782  Mean of d2level_llece_read
+se_d2level~d  330    300  .0203332  .0055357  .0650208  Standard error of m_d2level_llece_read
+m_d3level_~d  330    300  .3972598  .1147963  .5343425  Mean of d3level_llece_read
+se_d3level~d  330    300  .0232337  .0107783  .0925413  Standard error of m_d3level_llece_read
+m_d4level_~d  330    300  .2752604  .0608672  .5397645  Mean of d4level_llece_read
+se_d4level~d  330    300  .0212322  .0092538  .0992053  Standard error of m_d4level_llece_read
+m_d5level_~d  330    300  .0992313         0  .5412363  Mean of d5level_llece_read
+se_d5level~d  330    300  .0122394         0  .0870905  Standard error of m_d5level_llece_read
+m_d1level_~h  360    334   .031671         0  .2728012  Mean of d1level_llece_math
+se_d1level~h  360    334   .007545         0  .0463853  Standard error of m_d1level_llece_math
+m_d2level_~h  360    360  .2271635         0  .6033329  Mean of d2level_llece_math
+se_d2level~h  360    360  .0219113         0  .0726718  Standard error of m_d2level_llece_math
+m_d3level_~h  360    360  .3691847  .1103395  .6186014  Mean of d3level_llece_math
+se_d3level~h  360    360  .0253672  .0100035  .0779154  Standard error of m_d3level_llece_math
+m_d4level_~h  360    360  .2613875  .0051441  .5503706  Mean of d4level_llece_math
+se_d4level~h  360    360  .0219399  .0037785  .0901785  Standard error of m_d4level_llece_math
+m_d5level_~h  360    358  .1105933         0  .4365646  Mean of d5level_llece_math
+se_d5level~h  360    358  .0159599         0   .095552  Standard error of m_d5level_llece_math
+m_d1level_~i  180    180  .0561947  .0053408  .1970528  Mean of d1level_llece_sci
+se_d1level~i  180    180  .0115753  .0024704  .0713737  Standard error of m_d1level_llece_sci
+m_d2level_~i  180    180  .3596725  .1131621  .6118376  Mean of d2level_llece_sci
+se_d2level~i  180    180   .025392  .0112302  .1070937  Standard error of m_d2level_llece_sci
+m_d3level_~i  180    180  .4170526  .2275664  .5601829  Mean of d3level_llece_sci
+se_d3level~i  180    180  .0257152   .010437  .1654955  Standard error of m_d3level_llece_sci
+m_d4level_~i  180    180  .1493161  .0086741  .3946156  Mean of d4level_llece_sci
+se_d4level~i  180    180  .0179049  .0048845   .187364  Standard error of m_d4level_llece_sci
+m_d5level_~i  180    169   .017764         0  .1215963  Mean of d5level_llece_sci
+se_d5level~i  180    168  .0049583         0  .0214952  Standard error of m_d5level_llece_sci
+n_total       360     30    3998.9      2825      5211  # learners, by countrycode idgrade
+n_male        360     29    1923.2      1360      2654  # male learners, by countrycode idgrade
+n_urban       360     30    2576.6      1422      4010  # urban learners, by countrycode idgrade
+n_has_qescs   360     30  2737.367      1937      3765  # has_qescs learners, by countrycode idgrade
+n_qescs       360     30  8629.633      5727     11913  # qescs learners, by countrycode idgrade
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ~~~~
 
-About the **150     observations** in this dataset:
+About the **360     observations** in this dataset:
 
 ~~~~
 . tab countrycode idgrade
@@ -96,23 +109,23 @@ WB country |
    code (3 |       Grade ID
   letters) |         3          6 |     Total
 -----------+----------------------+----------
-       ARG |         5          5 |        10 
-       BRA |         5          5 |        10 
-       CHL |         5          5 |        10 
-       COL |         5          5 |        10 
-       CRI |         5          5 |        10 
-       DOM |         5          5 |        10 
-       ECU |         5          5 |        10 
-       GTM |         5          5 |        10 
-       HND |         5          5 |        10 
-       MEX |         5          5 |        10 
-       NIC |         5          5 |        10 
-       PAN |         5          5 |        10 
-       PER |         5          5 |        10 
-       PRY |         5          5 |        10 
-       URY |         5          5 |        10 
+       ARG |        12         12 |        24 
+       BRA |        12         12 |        24 
+       CHL |        12         12 |        24 
+       COL |        12         12 |        24 
+       CRI |        12         12 |        24 
+       DOM |        12         12 |        24 
+       ECU |        12         12 |        24 
+       GTM |        12         12 |        24 
+       HND |        12         12 |        24 
+       MEX |        12         12 |        24 
+       NIC |        12         12 |        24 
+       PAN |        12         12 |        24 
+       PER |        12         12 |        24 
+       PRY |        12         12 |        24 
+       URY |        12         12 |        24 
 -----------+----------------------+----------
-     Total |        75         75 |       150 
+     Total |       180        180 |       360 
 
 . 
 . tab subgroup
@@ -122,12 +135,19 @@ WB country |
 countrycode |
     idgrade |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-        all |         30       20.00       20.00
-     male=0 |         30       20.00       40.00
-     male=1 |         30       20.00       60.00
-    urban=0 |         30       20.00       80.00
-    urban=1 |         30       20.00      100.00
+        all |         30        8.33        8.33
+has_qescs=0 |         30        8.33       16.67
+has_qescs=1 |         30        8.33       25.00
+     male=0 |         30        8.33       33.33
+     male=1 |         30        8.33       41.67
+    qescs=1 |         30        8.33       50.00
+    qescs=2 |         30        8.33       58.33
+    qescs=3 |         30        8.33       66.67
+    qescs=4 |         30        8.33       75.00
+    qescs=5 |         30        8.33       83.33
+    urban=0 |         30        8.33       91.67
+    urban=1 |         30        8.33      100.00
 ------------+-----------------------------------
-      Total |        150      100.00
+      Total |        360      100.00
 
 ~~~~
