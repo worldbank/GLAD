@@ -16,12 +16,12 @@ master:      v01_M
 adaptation:  wrk_A_GLAD
 module:      ALL
 ttl_info:    Joao Pedro de Azevedo [eduanalytics@worldbank.org]
-dofile_info: last modified by Diana Goldemberg in October 8, 2019
-lastsave:    9 Oct 2019 20:31:01 by wb552057
+dofile_info: last modified by Joao Pedro Azevedo in Feb 05, 2022
+lastsave:    11 Feb 2022 19:10:05 by wb255520
 ~~~~
 
 
-About the **47 variables** in this dataset:
+About the **64 variables** in this dataset:
 
 ~~~~
 The variables belong to the following variable classifications:
@@ -30,12 +30,12 @@ The variables belong to the following variable classifications:
 idvars:     idcntry_raw idschool idgrade idclass idlearner
 keyvars:    surveyid countrycode national_level
 valuevars:  score_pirls_read_01 score_pirls_read_02 score_pirls_read_03 score_pirls_read_04 score_pirls_read_05 level_pirls_read_01 level_pirls_read_02 level_pirls_read_03 level_pirls_read_04 level_pirls_read_05
-traitvars:  age urban urban_o1 urban_o2 male escs
+traitvars:  age urban urban_o1 urban_o2 male escs qescs has_qescs
 samplevars: learner_weight jkzone jkrep
 
 
 Variable         Obs Unique      Mean        Min       Max  Label
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
 idcntry_raw   307747     57  2318.225         31     72401  Country ID, as coded in rawdata
 idschool      307747   2037  595.7541          1      9004  School ID
 idgrade       307747      3  4.186855          4         6  Grade ID
@@ -60,16 +60,18 @@ urban_o1      294550      7         .          .         .  Original variable of
 urban_o2      294566      6         .          .         .  Original variable of urban: school is located in urban/rural area
 male          307747      2  .5048985          0         1  Learner gender is male/female
 escs          291094 109114  .3875538  -3.661336  2.125801  
+qescs         291094      5  3.067679          1         5  Quintiles of Socio-Economic Status
+has_qescs     307747      2  .9458874          0         1  Dummy variable for observations with a valid QESCS
 learner_we~t  307747  10409  65.49117          1  4916.817  Total learner weight
 jkzone        307747     75  35.81449          1        75  Jackknife zone
 jkrep         307747      2  .4998067          0         1  Jackknife replicate code
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
 
 
 Plus the variables merged-on-the-fly, which are:
 
 traitvars:  lp01_threshold_var lp02_threshold_var lp03_threshold_var lp04_threshold_var lp05_threshold_var lp01_threshold_val lp02_threshold_val lp03_threshold_val lp04_threshold_val lp05_threshold_val lp01_threshold_res lp02_threshold_res lp03_threshold_res lp04_threshold_res lp05_threshold_res
-valuevars:  hpro_read_01 hpro_read_02 hpro_read_03 hpro_read_04 hpro_read_05
+valuevars:  sdg411_read_01 bmp_read_01 fgt1_read_01 fgt2_read_01 sdg411_read_02 bmp_read_02 fgt1_read_02 fgt2_read_02 sdg411_read_03 bmp_read_03 fgt1_read_03 fgt2_read_03 sdg411_read_04 bmp_read_04 fgt1_read_04 fgt2_read_04 sdg411_read_05 bmp_read_05 fgt1_read_05 fgt2_read_05
 ~~~~
 
 About the **307,747 observations** in this dataset:
@@ -152,63 +154,138 @@ WB country |
 
 ~~~~
 
-        hpro_read_01 |      Freq.     Percent        Cum.
+      sdg411_read_01 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
       Non-proficient |     45,701       14.85       14.85
           Proficient |    262,046       85.15      100.00
 ---------------------+-----------------------------------
                Total |    307,747      100.00
 
-        hpro_read_02 |      Freq.     Percent        Cum.
+         bmp_read_01 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    262,046       85.15       85.15
+      Non-proficient |     45,701       14.85      100.00
+---------------------+-----------------------------------
+               Total |    307,747      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_read_01 |     45,701     .173916    .1456214   3.87e-06   .9868477
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_read_01 |     45,701    .0514519    .0816741   1.50e-11   .9738684
+
+      sdg411_read_02 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
       Non-proficient |     46,399       15.08       15.08
           Proficient |    261,348       84.92      100.00
 ---------------------+-----------------------------------
                Total |    307,747      100.00
 
-        hpro_read_03 |      Freq.     Percent        Cum.
+         bmp_read_02 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    261,348       84.92       84.92
+      Non-proficient |     46,399       15.08      100.00
+---------------------+-----------------------------------
+               Total |    307,747      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_read_02 |     46,399    .1767747    .1479537   2.75e-07      .9875
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_read_02 |     46,399    .0531391    .0844526   7.56e-14   .9751562
+
+      sdg411_read_03 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
       Non-proficient |     46,364       15.07       15.07
           Proficient |    261,383       84.93      100.00
 ---------------------+-----------------------------------
                Total |    307,747      100.00
 
-        hpro_read_04 |      Freq.     Percent        Cum.
+         bmp_read_03 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    261,383       84.93       84.93
+      Non-proficient |     46,364       15.07      100.00
+---------------------+-----------------------------------
+               Total |    307,747      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_read_03 |     46,364    .1765039    .1483677   4.10e-06      .9875
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_read_03 |     46,364    .0531661    .0846056   1.68e-11   .9751562
+
+      sdg411_read_04 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
       Non-proficient |     46,058       14.97       14.97
           Proficient |    261,689       85.03      100.00
 ---------------------+-----------------------------------
                Total |    307,747      100.00
 
-        hpro_read_05 |      Freq.     Percent        Cum.
+         bmp_read_04 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    261,689       85.03       85.03
+      Non-proficient |     46,058       14.97      100.00
+---------------------+-----------------------------------
+               Total |    307,747      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_read_04 |     46,058    .1779764    .1487824   1.08e-06      .9875
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_read_04 |     46,058    .0538113    .0855046   1.16e-12   .9751562
+
+      sdg411_read_05 |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
       Non-proficient |     46,107       14.98       14.98
           Proficient |    261,640       85.02      100.00
 ---------------------+-----------------------------------
                Total |    307,747      100.00
 
+         bmp_read_05 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+          Proficient |    261,640       85.02       85.02
+      Non-proficient |     46,107       14.98      100.00
+---------------------+-----------------------------------
+               Total |    307,747      100.00
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt1_read_05 |     46,107    .1766971    .1479964   5.40e-06      .9875
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fgt2_read_05 |     46,107    .0531243    .0847084   2.92e-11   .9751562
 
 
-     +----------------------------------------------------------------+
-     | idgrade   prefix                       harmonization_condition |
-     |----------------------------------------------------------------|
-  1. |       4     lp01   hpro_read_01 = (score_pirls_read_01 >= 400) |
-  2. |       4     lp02   hpro_read_02 = (score_pirls_read_02 >= 400) |
-  3. |       4     lp03   hpro_read_03 = (score_pirls_read_03 >= 400) |
-  4. |       4     lp04   hpro_read_04 = (score_pirls_read_04 >= 400) |
-  5. |       4     lp05   hpro_read_05 = (score_pirls_read_05 >= 400) |
-     |----------------------------------------------------------------|
-  6. |       5     lp01   hpro_read_01 = (score_pirls_read_01 >= 400) |
-  7. |       5     lp02   hpro_read_02 = (score_pirls_read_02 >= 400) |
-  8. |       5     lp03   hpro_read_03 = (score_pirls_read_03 >= 400) |
-  9. |       5     lp04   hpro_read_04 = (score_pirls_read_04 >= 400) |
- 10. |       5     lp05   hpro_read_05 = (score_pirls_read_05 >= 400) |
-     |----------------------------------------------------------------|
- 11. |       6     lp01   hpro_read_01 = (score_pirls_read_01 >= 400) |
- 12. |       6     lp02   hpro_read_02 = (score_pirls_read_02 >= 400) |
- 13. |       6     lp03   hpro_read_03 = (score_pirls_read_03 >= 400) |
- 14. |       6     lp04   hpro_read_04 = (score_pirls_read_04 >= 400) |
- 15. |       6     lp05   hpro_read_05 = (score_pirls_read_05 >= 400) |
-     +----------------------------------------------------------------+
+
+     +-----------------------------------------------------------+
+     | idgrade   prefix                  harmonization_condition |
+     |-----------------------------------------------------------|
+  1. |       4     lp01   read_01 = (score_pirls_read_01 >= 400) |
+  2. |       4     lp02   read_02 = (score_pirls_read_02 >= 400) |
+  3. |       4     lp03   read_03 = (score_pirls_read_03 >= 400) |
+  4. |       4     lp04   read_04 = (score_pirls_read_04 >= 400) |
+  5. |       4     lp05   read_05 = (score_pirls_read_05 >= 400) |
+     |-----------------------------------------------------------|
+  6. |       5     lp01   read_01 = (score_pirls_read_01 >= 400) |
+  7. |       5     lp02   read_02 = (score_pirls_read_02 >= 400) |
+  8. |       5     lp03   read_03 = (score_pirls_read_03 >= 400) |
+  9. |       5     lp04   read_04 = (score_pirls_read_04 >= 400) |
+ 10. |       5     lp05   read_05 = (score_pirls_read_05 >= 400) |
+     |-----------------------------------------------------------|
+ 11. |       6     lp01   read_01 = (score_pirls_read_01 >= 400) |
+ 12. |       6     lp02   read_02 = (score_pirls_read_02 >= 400) |
+ 13. |       6     lp03   read_03 = (score_pirls_read_03 >= 400) |
+ 14. |       6     lp04   read_04 = (score_pirls_read_04 >= 400) |
+ 15. |       6     lp05   read_05 = (score_pirls_read_05 >= 400) |
+     +-----------------------------------------------------------+
 
 ~~~~

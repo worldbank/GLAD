@@ -10,7 +10,7 @@ local master      = "v01_M"
 local adaptation  = "wrk_A_GLAD"
 local module      = "ALL"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Diana Goldemberg in October 8, 2019"
+local dofile_info = "last modified by Joao Pedro Azevedo in Feb 05, 2022"  /* change date*/
 *
 * Steps:
 * 0) Program setup (identical for all assessments)
@@ -173,7 +173,7 @@ quietly {
 
 
     // TRAIT Vars:
-    local traitvars	"age urban* male escs"
+    local traitvars	"age urban* male escs qescs has_qescs"
 
     *<_age_>
     gen age = asdage  if  !missing(asdage)  &  asdage != 99
@@ -301,6 +301,39 @@ quietly {
     *** QUICK FIX ****
     rename *, lower
     ******************
+	
+	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
+	* This is the variable used to compute results by Socio Economic Status.
+	* Ensure that CNTRY Identifer is used as STRING.
+	*<_qescs_>
+	tempvar cntrycode
+	cap: confirm numeric variable idcntry_raw
+	if (_rc == 0) {
+		tostring idcntry_raw, gen(`cntrycode')
+	}
+	else {
+		clonevar `cntrycode' = idcntry_raw
+	}
+	cap: sum qescs
+	if (_rc!=0) {
+		gen byte qescs = .
+		levelsof idgrade, local(grades)
+		levelsof `cntrycode', local(countries)
+		foreach country of local countries {
+			foreach grade of local grades {
+				capture drop qaux
+				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
+				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
+			}
+		}
+	}
+	label var qescs "Quintiles of Socio-Economic Status"
+	*</_qescs_>
+
+	 *<_has_qescs_>
+	gen byte has_qescs = (qescs != .)
+	label var has_qescs "Dummy variable for observations with a valid QESCS"
+	*</_has_qescs_>
 
     noi disp as res "{phang}Step 4 completed (`output_file'){p_end}"
 

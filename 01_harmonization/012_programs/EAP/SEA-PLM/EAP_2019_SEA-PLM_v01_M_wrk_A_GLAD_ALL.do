@@ -10,7 +10,7 @@ local master      = "v01_M" /* usually v01_M, unless the master (eduraw) was upd
 local adaptation  = "wrk_A_GLAD" /* no need to change here */
 local module      = "ALL"  /* for now, we are only generating ALL and ALL-BASE in GLAD */
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]" /* no need to change here */
-local dofile_info = "last modified by Yi Ning Wong in Feb 14, 2021"  /* change date*/
+local dofile_info = "last modified by Joao Pedro Azevedo in Feb 05, 2022"  /* change date*/
 *
 * Steps:
 * 0) Program setup (identical for all assessments)
@@ -40,7 +40,7 @@ noisily {
   // Set up folders in clone and define locals to be used in this do-file
   glad_local_folder_setup , r("`region'") y("`year'") as("`assessment'") ma("`master'") ad("`adaptation'")  
   
-  local temp_dir    	"`r(temp_dir)'" 
+  local temp_dir     "`r(temp_dir)'" 
   local output_dir   "`r(output_dir)'" 
   local surveyid     "`r(surveyid)'"
   local output_file  "`surveyid'_`adaptation'_`module'"
@@ -96,16 +96,15 @@ noisily {
     *---------------------------------------------------------------------------
 
     ***** SEA-PLM 2019 *****
-		use "`temp_dir'/sea-plm_regional_students.dta", clear
-		merge m:1 cnt fullid using "`temp_dir'/sea-plm_regional_parents", keep(master match using) nogen
-		merge m:1 cnt fullid using "`temp_dir'/sea-plm_regional_parents_no_indices", keep(master match using) nogen
+	use "`temp_dir'/sea-plm_regional_students.dta", clear
+	merge m:1 cnt fullid using "`temp_dir'/sea-plm_regional_parents", keep(master match using) nogen
+	merge m:1 cnt fullid using "`temp_dir'/sea-plm_regional_parents_no_indices", keep(master match using) nogen
     merge m:1 cnt schid stidstrt stidsch using "`temp_dir'/sea-plm_regional_schools.dta", keep(master match using) nogen
     save "`temp_dir'/sea-plm_regional.dta", replace
     ***** END OF SEA-PLM 2019  *****/
 
     noi disp as res "{phang}Step 2 completed (`output_file'){p_end}"
 	
-
 
     *---------------------------------------------------------------------------
     * 3) Standardize variable names across all assessments
@@ -207,7 +206,7 @@ noisily {
 
 
     // TRAIT Vars:
-    local traitvars	"age urban* male escs"
+    local traitvars	"age urban* male escs qescs has_qescs"
 
     *<_age_>
     gen age = s_age		if !missing(s_age) & s_age < 97
@@ -269,82 +268,80 @@ noisily {
     local saplmvars "ses_quintile city language school_type school_type_o asian_identity escs*"
 		
     // Placeholder for other operations that we may want to include (kept in ALL-BASE)
-		*<_escs_>
-		**Clone SES Calculation
-		clonevar escs = ses
-		label var escs "Socioeconomic status: SEA-PLM"
+	*<_escs_>
+	**Clone SES Calculation
+	clonevar escs = ses
+	label var escs "Socioeconomic status: SEA-PLM"
 				
-		** Household Asset Index
-		clonevar escs_homeres = homeres
-		label var escs_homeres "Home Resource Index Based on Household Assets"
+	** Household Asset Index
+	clonevar escs_homeres = homeres
+	label var escs_homeres "Home Resource Index Based on Household Assets"
 		
-		** Save Household Assets
-		foreach var in st10q15 st10q16 st11q01 pa05q01 pa05q02 pa05q05 pa05q08 pa05q09 pa05q10 pa05q11 pa05q12 pa05q13 pa05q14 pa05q15 pa05q16 pa05q18 pa05q19 pa05q20 pa06q01 pa07q01 {
-			clonevar escs_`var' = `var'
-			local x : variable label `var'
-			label var escs_`var' "Household asset `x'"
-		}
+	** Save Household Assets
+	foreach var in st10q15 st10q16 st11q01 pa05q01 pa05q02 pa05q05 pa05q08 pa05q09 pa05q10 pa05q11 pa05q12 pa05q13 pa05q14 pa05q15 pa05q16 pa05q18 pa05q19 pa05q20 pa06q01 pa07q01 {
+		clonevar escs_`var' = `var'
+		local x : variable label `var'
+		label var escs_`var' "Household asset `x'"
+	}
 		
-		** Parental education
-		clonevar escs_pared = pared if pared <= 5
-		replace escs_pared = 6 if escs_pared == 1
-		replace escs_pared = 5 if escs_pared == 2 // this is ISCED 4 and 5
-		replace escs_pared = 2 if escs_pared == 4
-		replace escs_pared = 1 if escs_pared == 5
-		label var escs_pared "Highest parental education (ISCED)"
+	** Parental education
+	clonevar escs_pared = pared if pared <= 5
+	replace escs_pared = 6 if escs_pared == 1
+	replace escs_pared = 5 if escs_pared == 2 // this is ISCED 4 and 5
+	replace escs_pared = 2 if escs_pared == 4
+	replace escs_pared = 1 if escs_pared == 5
+	label var escs_pared "Highest parental education (ISCED)"
 		
-		** Parental Occupation
-		gen byte escs_pocc =(inlist(pocc, 1, 2, 3, 4, 5, 6))  if  !missing(pocc)
-		label var escs_pocc
-		*</_escs_>
+	** Parental Occupation
+	gen byte escs_pocc =(inlist(pocc, 1, 2, 3, 4, 5, 6))  if  !missing(pocc)
+	label var escs_pocc
+	*</_escs_>
 		
 		
     *<_ses_quintile_>
-		gen ses_quintile = . // sea-plm ses different from GLAD escs
+	gen ses_quintile = . // sea-plm ses different from GLAD escs
     levelsof idcntry_raw, local (c)
     foreach cc of local c {
-      _ebin ses [weight = learner_weight] if idcntry_raw == "`cc'" , gen(q_`cc') nquantiles(5)
-      replace ses_quintile = q_`cc' if missing(ses_quintile)
-      drop q_`cc'
+		_ebin ses [weight = learner_weight] if idcntry_raw == "`cc'" , gen(q_`cc') nquantiles(5)
+		replace ses_quintile = q_`cc' if missing(ses_quintile)
+		drop q_`cc'
     }
     label define ses_quintile 1 "q1" 2 "q2" 3 "q3" 4 "q4" 5 "q5", modify
     label value ses_quintile ses_quintile
     label var ses_quintile "Income quintile: SEA-PLM calculations"
     *</_ses_>
 	
-		 // SEA-PLM Vars:
-		
-		 *<_city_>
-		 encode sc09q01, gen(city)
-		 replace city = 1 if city == 4 | city == 5 
-		 replace city = 2 if city == 2 | city == 3
-		 replace city = 3 if city == 1 
-		 replace city = -98 if city >= 7
-		 label var city "School is located in city (1), town (2), village (3)"
+	// SEA-PLM Specific variables:
+	*<_city_>
+	encode sc09q01, gen(city)
+	replace city = 1 if city == 4 | city == 5 
+	replace city = 2 if city == 2 | city == 3
+	replace city = 3 if city == 1 
+	replace city = -98 if city >= 7
+	label var city "School is located in city (1), town (2), village (3)"
     *<_city_>
 
     *<_language_>
     gen language = s_lang if !inlist(s_lang, 7,8,9) // describes if test prescribed is same language as the one spoken at home
     replace language = -99 if inlist(s_lang, 7,8,9)
-		replace language = 2 if language == 0
+	replace language = 2 if language == 0
     label define language 1 "LangTest" 2 "LangOther"
     label value language language
     label var language "Language of test (1), other language (2)"
     *</_language_>
 
-
     *<_school_type_>
-		encode sc05q01 if sc05q01  != "7" | sc05q01 != "8" | sc05q01 != "9", gen (school_type)
+	encode sc05q01 if sc05q01  != "7" | sc05q01 != "8" | sc05q01 != "9", gen (school_type)
     replace school_type = -99 if inlist(school_type, 7, 8, 9)
-		replace school_type = 3 if school_type == 1 // public school - match labeling from PISA
-		replace school_type = 1 if school_type == 0 
+	replace school_type = 3 if school_type == 1 // public school - match labeling from PISA
+	replace school_type = 1 if school_type == 0 
     label define school_type 1 "PvtIND" 2 "PvtDEP" 3 "Public", replace
     label value school_type school_type
     label var school_type "Type of ownership and decision-making power of schools"
     *</_school_type_>
 
     *<_school_type_o_> - original school type variable
-		encode sc05q01 if sc05q01  != "7" | sc05q01 != "8" | sc05q01 != "9", gen (school_type_o)
+	encode sc05q01 if sc05q01  != "7" | sc05q01 != "8" | sc05q01 != "9", gen (school_type_o)
     replace school_type_o = -98 if sc05q01 == "8" | sc05q01 == "9" 
     replace school_type_o = -97 if sc05q01 == "7"
     label define school_type_o 1 "PublicSch" 2 "PvtSch", modify
@@ -352,15 +349,48 @@ noisily {
     label var school_type_o "Type of school - Public or Private"
     *</_school_type_o_>
 		
-		*<_asian_identity_>
-		clonevar asian_identity = asident
-		label var asian_identity "Student identifies as Asian from 0 - 100 scale"
-		*</_asian_identity_>
+	*<_asian_identity_>
+	clonevar asian_identity = asident
+	label var asian_identity "Student identifies as Asian from 0 - 100 scale"
+	*</_asian_identity_>
 	
-		
+	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
+	* This is the variable used to compute results by Socio Economic Status.
+	* Ensure that CNTRY Identifer is used as STRING.
+	*<_qescs_>
+	tempvar cntrycode
+	cap: confirm numeric variable idcntry_raw
+	if (_rc == 0) {
+		tostring idcntry_raw, gen(`cntrycode')
+	}
+	else {
+		clonevar `cntrycode' = idcntry_raw
+	}
+	cap: sum qescs
+	if (_rc!=0) {
+		gen byte qescs = .
+		levelsof idgrade, local(grades)
+		levelsof `cntrycode', local(countries)
+		foreach country of local countries {
+			foreach grade of local grades {
+				capture drop qaux
+				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
+				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
+			}
+		}
+	}
+	label var qescs "Quintiles of Socio-Economic Status"
+	*</_qescs_>
+
+	 *<_has_qescs_>
+	gen byte has_qescs = (qescs != .)
+	label var has_qescs "Dummy variable for observations with a valid QESCS"
+	*</_has_qescs_>
+
     *** QUICK FIX ****
     rename *, lower
     ******************
+	
     noi disp as res "{phang}Step 4 completed (`output_file'){p_end}"
 
 

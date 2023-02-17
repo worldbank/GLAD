@@ -1,7 +1,15 @@
 *==============================================================================*
 *!  PROGRAM: CREATE CLO (COUNTRY LEVEL OUTCOMES) FROM GLAD MICRODATA
 *!  Project information at: https://github.com/worldbank/GLAD
-*!  Diana Goldemberg, EduAnalytics   version 1.2   3set2020
+*!  Joao Pedro Azevedo, EduAnalytics   version 1.3.1  6fev2022
+*      accept different types of missing values. This is required for PISA.
+*  Joao Pedro Azevedo, EduAnalytics   version 1.3     3fev2022
+*      Fix pv_mode option for TIMSS 2019. Pre-existing condition was creating
+*      and error with the PASEC 2019 condition. Use 'inlist' for more robust 
+*      code.
+*  Ahmed Raza, EduAnalytics   version 1.2.1     3fev2022
+*      Delete observatiosn with missing data
+*  Diana Goldemberg, EduAnalytics   version 1.2   3set2020
 *==============================================================================*
 
 /* The use case of this program is:
@@ -19,6 +27,8 @@
 
 cap program drop glad_microdata_to_clo
 program  define  glad_microdata_to_clo, rclass
+
+  version 17
 
   syntax, ASSessment(string) Year(int) GROUPS(varlist) [SUBgroups(varlist)] ///
          [DUMMY_vars(varlist)] [FACTOR_vars(varlist)] [NUMBER_vars(varlist)]
@@ -42,7 +52,7 @@ program  define  glad_microdata_to_clo, rclass
     * In particular, if subgroup vars are not dummies, we have a problem.
     if "`subgroups'" != "" {
       foreach trait of varlist `trait_groupvars' {
-        cap assert inlist(`trait', 0, 1, 2, 3, 4, 5, .)
+        cap assert inlist(`trait', 0, 1, 2, 3, 4, 5, ., .a, .b, .c)
         if _rc {
           noi disp as err "{phang}only dummy variable can be transformed in subgroups, and you passed {it: subgroups(`trait')}{p_end}"
           exit `syntaxerror'
@@ -50,25 +60,28 @@ program  define  glad_microdata_to_clo, rclass
       }
     }
 
-
     * Set which type of mean aggregation depending on which assessment or year,
     * and give an error if none is explicitly defined
-   if inlist("`assessment'", "LLECE", "LLECE-T", "SACMEQ") local pv_aggregate = 0
-    else if "`assessment'" == "PASEC" & `year' == 1996      local pv_aggregate = 0
-    else if "`assessment'" == "PASEC" & `year' == 2014 | `year' == 2019 {
+   if inlist("`assessment'", "LLECE", "SACMEQ") local pv_aggregate = 0
+    else if "`assessment'" == "PASEC" & `year' == 1996   local pv_aggregate = 0
+	else if "`assessment'" == "LLECE-T" & `year' == 2013 local pv_aggregate = 0 
+    else if ("`assessment'" == "PASEC") & inlist(`year', 2014, 2019) {
       local pv_aggregate = 1
       * pv_mode are options on the pv command that will be used later on
       local pv_mode = "rw(weight_replicate*)"
     }
-    else if inlist("`assessment'", "PIRLS", "TIMSS", "SEA-PLM", "SEAPLM") {
+	
+    else if inlist("`assessment'", "PIRLS", "TIMSS", "SEA-PLM", "SEAPLM", "AMPLB") {
       local pv_aggregate = 1
       local pv_mode = lower("`assessment'")
     }
+	else if ("`assessment'" == "LLECE-T") & `year' == 2019  local pv_aggregate = 1
     else if "`assessment'" == "PISA" & `year' >= 2000 local pv_aggregate = 1
     else {
       noi disp as err "{phang}the routine is not well defined for `assesment' `year'.{p_end}"
       exit `syntaxerror'
     }
+
 
 
     * Each GLAD file has value variables that are factors (level_*),
@@ -80,6 +93,7 @@ program  define  glad_microdata_to_clo, rclass
       noi disp as error `"{phang}You must specify some variables in {it: dummy_vars, factor_vars or number_vars}{p_end}"'
       exit `syntaxerror'
     }
+
 
     *---------------------------------------------------------------------------
     * 1) Prepare list of variables to be aggregated in indicators in CLO
@@ -234,7 +248,9 @@ program  define  glad_microdata_to_clo, rclass
     foreach  id_combo of local id_combos {
 
       * Preserve the prepared file again before keep the combo of this iteration
+	  
       preserve
+	  
         keep if id_combo == `id_combo'
 
         * Displays progress of the combo loop within an assessment-year
@@ -249,7 +265,7 @@ program  define  glad_microdata_to_clo, rclass
             if !_rc  drop `wgt_var'
           }
         }
-
+		
         * Loop over each indicator in this dataset
         foreach indicator of local this_indicators {
 
@@ -394,9 +410,28 @@ program  define  glad_microdata_to_clo, rclass
 				
 			  else if "`assessment'" == "SEA-PLM" {
                 capture pv, pv(`indicator'_??_`subgroup') brr weight(learner_weight) fays(0.5) rw(weight_replicate*) : mean @pv [aw=@w]
-								//brr weight(learner_weight) jkrweight(weight_replicate*, multiplier(1)) : mean @pv [aw=@w]
 			  } 
-              
+			  
+			  else if "`assessment'" == "AMPLB" & `year' == 2021 {
+                capture pv, pv(`indicator'_??_`subgroup') brr weight(learner_weight) fays(0.5) rw(weight_replicate*) : mean @pv [aw=@w]
+              }
+              else if "`assessment'" == "AMPLB" & `year' == 2019 & (countrycode == "BDI" | countrycode == "KEN" | countrycode == "ZMB") {
+				capture pv, pv(`indicator'_??_`subgroup') brr weight(learner_weight) fays(0.5) rw(weight_replicate1-weight_replicate216) : mean @pv [aw=@w]
+			  }
+              else if "`assessment'" == "AMPLB" & `year' == 2019 & (countrycode == "SEN") {
+				capture pv, pv(`indicator'_??_`subgroup') brr weight(learner_weight) fays(0.5) rw(weight_replicate1-weight_replicate178) : mean @pv [aw=@w]
+			  }
+			  else if "`assessment'" == "AMPLB" & `year' == 2019 & (countrycode == "CIV") {
+				capture pv, pv(`indicator'_??_`subgroup') brr weight(learner_weight) fays(0.5) rw(weight_replicate1-weight_replicate175) : mean @pv [aw=@w]
+			  }
+			  else if "`assessment'" == "AMPLB" & `year' == 2019 & countrycode == "BFA" {
+				capture pv, pv(`indicator'_??_`subgroup') brr weight(learner_weight) fays(0.5) rw(weight_replicate*) : mean @pv [aw=@w]
+			  }
+			  
+			  else if "`assessment'" == "LLECE-T" & `year' == 2019 {
+				capture pv, pv(`indicator'_??_`subgroup') brr weight(learner_weight) fays(0.5) rw(weight_replicate*) : mean @pv [aw=@w]
+			  }
+			  
 			  else {
                 capture pv, pv(`indicator'_??_`subgroup') jkzone(jkzone) jkrep(jkrep) weight(learner_weight) jrr `pv_mode' : mean @pv [aw=@w]
               }
@@ -509,5 +544,14 @@ program  define  glad_microdata_to_clo, rclass
     return local traitvars "`trait_n_vars'"
 
   }
-
+  
+  
+   * This removes missing values from the final dataset. 
+   tempvar rmiss 
+   egen `rmiss' = rowmiss( n_* m_* se_*)
+   sum `rmiss'
+   local max = r(max)
+   drop if `rmiss' == `max'
+  
+   
 end

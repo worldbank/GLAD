@@ -10,7 +10,7 @@ local master      = "v01_M"
 local adaptation  = "wrk_A_GLAD"
 local module      = "ALL"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Diana Goldemberg in October 8, 2019"
+local dofile_info = "last modified by Joao Pedro Azevedo in Feb 05, 2022"  /* change date*/
 *
 * Steps:
 * 0) Program setup (identical for all assessments)
@@ -159,10 +159,16 @@ quietly {
     replace   score_llece_read    = ptje_eqserce_lec6	 if  idgrade==6
     clonevar  score_llece_math    = ptje_eqserce_mat3	 if  idgrade==3
     replace   score_llece_math    = ptje_eqserce_mat6	 if  idgrade==6
-    clonevar  score_llece_science = ptje_eqserce_cie6	 if  idgrade==6
+    clonevar  score_llece_sci 	= ptje_eqserce_cie6	 if  idgrade==6
     foreach subject in read math science {
-      label var score_llece_`subject' "Llece score for `subject'"
-      char      score_llece_`subject'[clo_marker] "number"
+	  if ("`subject'" == "science") {
+		local subject2 "sci"
+	  }
+	  else {
+		local subject2 "`subject'"
+	  } 
+      label var score_llece_`subject2' "Llece score for `subject'"
+      char      score_llece_`subject2'[clo_marker] "number"
     }
     *</_score_assessment_subject_pv_>
 
@@ -171,18 +177,24 @@ quietly {
     replace nivel_read = nivel_lec6    if  idgrade==6
     gen     nivel_math = nivel_mat3    if  idgrade==3
     replace nivel_math = nivel_mat6    if  idgrade==6
-    gen     nivel_science = nivel_cie6 if  idgrade==6
+    gen     nivel_sci  = nivel_cie6 	if  idgrade==6
     label define level_terce 0 "Bajo I" 1 "I" 2 "II" 3 "III" 4 "IV"
     foreach subject in read math science {
-      encode nivel_`subject', gen(level_llece_`subject') label(level_terce)
-      label var level_llece_`subject' "Llece level for `subject'"
-      char      level_llece_`subject'[clo_marker] "factor"
+	  if ("`subject'" == "science") {
+		local subject2 "sci"
+	  }
+	  else {
+		local subject2 "`subject'"
+	  } 
+      encode nivel_`subject2', gen(level_llece_`subject2') label(level_terce)
+      label var level_llece_`subject2' "Llece level for `subject'"
+      char      level_llece_`subject2'[clo_marker] "factor"
     }
     *</_level_assessment_subject_pv_>
 
 
     // TRAIT Vars:
-    local traitvars	"age urban* male escs"
+    local traitvars	"age urban* male escs qescs has_qescs"
 
     *<_age_>
     clonevar age = edad
@@ -216,8 +228,8 @@ quietly {
     clonevar  learner_weight_math = w2mat3				if  idgrade==3
     replace   learner_weight_math = w2mat6				if  idgrade==6
     label var learner_weight_math "Learner weight for math"
-    clonevar  learner_weight_science = w2cie6			if  idgrade==6
-    label var learner_weight_science "Learner weight for science"
+    clonevar  learner_weight_sci  = w2cie6			if  idgrade==6
+    label var learner_weight_sci  "Learner weight for science"
     // Because some analysis require learner_weight, we will set the default for reading
     clonevar  learner_weight = learner_weight_read
     *</_learner_weight*_>
@@ -294,6 +306,39 @@ quietly {
     *** QUICK FIX ****
     rename *, lower
     ******************
+	
+	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
+	* This is the variable used to compute results by Socio Economic Status.
+	* Ensure that CNTRY Identifer is used as STRING.
+	*<_qescs_>
+	tempvar cntrycode
+	cap: confirm numeric variable idcntry_raw
+	if (_rc == 0) {
+		tostring idcntry_raw, gen(`cntrycode')
+	}
+	else {
+		clonevar `cntrycode' = idcntry_raw
+	}
+	cap: sum qescs
+	if (_rc!=0) {
+		gen byte qescs = .
+		levelsof idgrade, local(grades)
+		levelsof `cntrycode', local(countries)
+		foreach country of local countries {
+			foreach grade of local grades {
+				capture drop qaux
+				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
+				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
+			}
+		}
+	}
+	label var qescs "Quintiles of Socio-Economic Status"
+	*</_qescs_>
+
+	 *<_has_qescs_>
+	gen byte has_qescs = (qescs != .)
+	label var has_qescs "Dummy variable for observations with a valid QESCS"
+	*</_has_qescs_>
 
     noi disp as res "{phang}Step 4 completed (`output_file'){p_end}"
 

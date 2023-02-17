@@ -10,7 +10,7 @@ local master      = "v01_M"
 local adaptation  = "wrk_A_GLAD"
 local module      = "ALL"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Diana Goldemberg in October 8, 2019"
+local dofile_info = "last modified by Joao Pedro Azevedo in Feb 05, 2022"  /* change date*/
 *
 * Steps:
 * 0) Program setup (identical for all assessments)
@@ -135,29 +135,29 @@ quietly {
 
 
     // VALUE Vars:
-    local valuevars	"score_sacmeq* level_sacmeq*"
+    local valuevars	"score_scmeq* level_scmeq*"
 
     *<_score_assessment_subject_pv_>
-    clonevar  score_sacmeq_read = zralocp
-    clonevar  score_sacmeq_math = zmalocp
+    clonevar  score_scmeq_read = zralocp
+    clonevar  score_scmeq_math = zmalocp
     foreach subject in read math {
-      label var score_sacmeq_`subject' "Sacmeq score for `subject'"
-      char      score_sacmeq_`subject'[clo_marker] "number"
+      label var score_scmeq_`subject' "Sacmeq score for `subject'"
+      char      score_scmeq_`subject'[clo_marker] "number"
     }
     *</_score_assessment_subject_pv_>
 
     *<_level_assessment_subject_pv_>
-    clonevar  level_sacmeq_read = zralevp
-    clonevar  level_sacmeq_math = zmalevp
+    clonevar  level_scmeq_read = zralevp
+    clonevar  level_scmeq_math = zmalevp
     foreach subject in read math {
-      label var level_sacmeq_`subject' "Sacmeq level for `subject'"
-      char      level_sacmeq_`subject'[clo_marker] "factor"
+      label var level_scmeq_`subject' "Sacmeq level for `subject'"
+      char      level_scmeq_`subject'[clo_marker] "factor"
     }
     *</_level_assessment_subject_pv_>
 
 
     // TRAIT Vars:
-    local traitvars	"age urban* male escs"
+    local traitvars	"age urban* male escs qescs has_qescs"
 
     *<_age_>
     gen age = zpagemon/12	// Age was in months
@@ -297,6 +297,39 @@ quietly {
     rename *, lower
     ******************
 
+	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
+	* This is the variable used to compute results by Socio Economic Status.
+	* Ensure that CNTRY Identifer is used as STRING.
+	*<_qescs_>
+	tempvar cntrycode
+	confirm numeric variable idcntry_raw
+	if (_rc == 0) {
+		tostring idcntry_raw, gen(`cntrycode')
+	}
+	else {
+		clonevar `cntrycode' = idcntry_raw
+	}
+	cap: sum qescs
+	if (_rc!=0) {
+		gen byte qescs = .
+		levelsof idgrade, local(grades)
+		levelsof `cntrycode', local(countries)
+		foreach country of local countries {
+			foreach grade of local grades {
+				capture drop qaux
+				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
+				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
+			}
+		}
+	}
+	label var qescs "Quintiles of Socio-Economic Status"
+	*</_qescs_>
+
+	 *<_has_qescs_>
+	gen byte has_qescs = (qescs != .)
+	label var has_qescs "Dummy variable for observations with a valid QESCS"
+	*</_has_qescs_>
+
     noi disp as res "{phang}Step 4 completed (`output_file'){p_end}"
 
 
@@ -315,6 +348,11 @@ quietly {
 
     // New variable class: keyvars (not IDs, but rather key to describe the dataset)
     local keyvars "surveyid countrycode national_level"
+
+	// Specify Survye Design for SACMEQ
+	if "`assessment'" == "SACMEQ" {
+        svyset idschool [pw = learner_weight], strata(strata) || _n
+    }
 
     // This function compresses the dataset, adds metadata passed in the arguments as chars, save GLAD_BASE.dta
     // which contains all variables, then keep only specified vars and saves GLAD.dta, and delete files in temp_dir

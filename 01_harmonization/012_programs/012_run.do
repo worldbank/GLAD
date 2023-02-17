@@ -22,7 +22,7 @@ global overwrite_files  = 1   // If 1, it always creates each GLAD.dta file, eve
 global shortcut = "${shortcut_GLAD}"  // NEVER COMMIT ANY CHANGES IN THIS LINE
 
 * Global paths that may serve as input and output for this task
-global input  "${network}/GDB/HLO_Database" // Where EDURAW files will be read from if datalibweb==0
+global input  "${network}GDB/Sandbox/LAC_2019_LLECE-T" // "GDB/HLO_Database" // Where EDURAW files will be read from if datalibweb==0
 global output "${clone}/01_harmonization/013_outputs"  // Where CLO.dta files will be saved
 * Locals input_dir and output_dir point to subfolders of those globals, for each region_year_assessment
 *-------------------------------------------------------------------------------
