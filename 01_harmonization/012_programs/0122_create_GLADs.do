@@ -28,9 +28,6 @@ local time  = subinstr("$S_TIME",":","-",.)
 * Basically, it runs region_year_assessment_v_M_v_A_GLAD.do files in 012_programs
 * that are part of the surveys_to_process in the current run_switch
 
-set trace on 
-set traced 1
-
 * Loop over all surveys to process (ie: WLD_2001_PIRLS)
 qui foreach survey of global surveys_to_process {
 
@@ -41,18 +38,12 @@ qui foreach survey of global surveys_to_process {
   gettoken trash  assessment : aux_token, parse("_")
   noi disp "{phang}Survey `survey' (region `region' year `year' assessment `assessment'):{p_end}"
 
-  // IMPORTANT: this calls the vintage number.
-  if "`assessment'"== "PASEC" & `year' == 2014 {
-   local vintage = "v02"  
-  }
-
-  else {
-	 local vintage = "v01"  
-  }
-
+  // IMPORTANT: this calls ONLY the wrk vintage. to produced different vintages, the microdata must be called through datalibweb. Edit must be done in 022_run.do
+  local vintage = "wrk"  
+  
   * Test if there are do-file for this survey in "${clone}/01_harmonization/012_programs"
   * Note that there may be multiple files according to master vintage
-  local survey_do_files : dir "${clone}/01_harmonization/012_programs/`region'/`assessment'/" files "`survey'_`vintage'_M_wrk_A_GLAD_ALL.do", respectcase 
+  local survey_do_files : dir "${clone}/01_harmonization/012_programs/`region'/`assessment'/" files "`survey'_v01_M_`vintage'_A_GLAD_ALL.do", respectcase 
 
   * If no file is found, log the unfortunate survey and move on
   if `"`survey_do_files'"' == "" {

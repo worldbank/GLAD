@@ -10,7 +10,7 @@ local master      = "v01_M"
 local adaptation  = "wrk_A_GLAD"
 local module      = "ALL"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Ahmed Raza in Jan 29, 2021"
+local dofile_info = "last modified by Ahmed Raza in January 29, 2021"
 
 
 *
@@ -26,7 +26,7 @@ local dofile_info = "last modified by Ahmed Raza in Jan 29, 2021"
 
 *Comment_AR: noisily or quietly use while debugging.
 
-noisily {
+quietly {
 
   *---------------------------------------------------------------------------
   * 0) Program setup (identical for all assessments)
@@ -51,9 +51,8 @@ noisily {
 
   // If user does not have access to datalibweb, point to raw microdata location
   if `from_datalibweb' == 0 {
-    local input_dir	= "${input}/TIMSS2019_unzipped/Stata"
+    local input_dir	= "${input}/WLD/WLD_2019_TIMSS/WLD_2019_TIMSS_v01_M/Data/Stata"
   }
-
   // Confirm if the final GLAD file already exists in the local clone
   cap confirm file "`output_dir'/`output_file'.dta"
   // If the file does not exist or overwrite_files local is set to one, run the do
@@ -212,7 +211,7 @@ noisily {
     
 	
     // TRAIT Vars:
-    local traitvars	"age urban* male escs"
+    local traitvars	"age urban* male escs qescs has_qescs"
 
     *<_age_>
     gen int age = asdage  if  !missing(asdage)  &  asdage != 99    
@@ -307,6 +306,7 @@ noisily {
     gen DURECE = ASDHAPS if ASDHAPS != 9
     
     * Comment_AR: This is where the code breaks: Summarize these vars: Describe of these vars in 2015 TIMSS. Remove K & J (country specific)
+	* asbg05a asbg05b asbg05c asbg05d asbg05e asbg05f asbg05g asbg05h asbg05i
 
     local asset_var "ASBG05A ASBG05B ASBG05C ASBG05D ASBG05E ASBG05F ASBG05G ASBG05H ASBG05I"
     local asset_std "ASBG05A_std ASBG05B_std ASBG05C_std ASBG05D_std ASBG05E_std ASBG05F_std ASBG05G_std ASBG05H_std ASBG05I_std"
@@ -555,11 +555,43 @@ noisily {
     */
 
     
-
     *** QUICK FIX ****
     rename *, lower
     ******************
+	
+	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
+	* This is the variable used to compute results by Socio Economic Status.
+	* Ensure that CNTRY Identifer is used as STRING.
+	*<_qescs_>
+	tempvar cntrycode
+	cap: confirm numeric variable idcntry_raw
+	if (_rc == 0) {
+		tostring idcntry_raw, gen(`cntrycode')
+	}
+	else {
+		clonevar `cntrycode' = idcntry_raw
+	}
+	cap: sum qescs
+	if (_rc!=0) {
+		gen byte qescs = .
+		levelsof idgrade, local(grades)
+		levelsof `cntrycode', local(countries)
+		foreach country of local countries {
+			foreach grade of local grades {
+				capture drop qaux
+				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
+				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
+			}
+		}
+	}
+	label var qescs "Quintiles of Socio-Economic Status"
+	*</_qescs_>
 
+	 *<_has_qescs_>
+	gen byte has_qescs = (qescs != .)
+	label var has_qescs "Dummy variable for observations with a valid QESCS"
+	*</_has_qescs_>
+	
     noi disp as res "{phang}Step L.4 completed (`output_file'){p_end}"
     
     // FINISHED LOWER GRADE TEMP FILE
@@ -598,7 +630,7 @@ noisily {
       // Temporary copies of the 3 rawdatasets needed for each country (new section)
       foreach prefix in bsa bsg bcg  {
         if `from_datalibweb'==1 {
-          noi edukit_datalibweb, d(country(`region') year(`year') type(EDURAW) surveyid(`surveyid') filename(`prefix'`cnt'.dta) `shortcut')
+          noi edukit_datalibweb, d(country(`region') year(`year') type(EDURAW) surveyid(`surveyid') filename(`prefix'`cnt'`ending'.dta) `shortcut')
         }
         else {
           use "`input_dir'/`prefix'`cnt'`ending'.dta", clear    // Comment_AR (fixed): m7 or b7 , or both: change 506 line too //
@@ -700,7 +732,7 @@ noisily {
 
 
     // TRAIT Vars:
-    local traitvars	"age urban* male escs"
+    local traitvars	"age urban* male escs qescs has_qescs"
 
     *<_age_>
     gen int age = bsdage  if  !missing(bsdage)  &  bsdage!= 99
@@ -858,7 +890,40 @@ noisily {
     *** QUICK FIX ****
     rename *, lower
     ******************
+	
+	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
+	* This is the variable used to compute results by Socio Economic Status.
+	* Ensure that CNTRY Identifer is used as STRING.
+	*<_qescs_>
+	tempvar cntrycode
+	cap: confirm numeric variable idcntry_raw
+	if (_rc == 0) {
+		tostring idcntry_raw, gen(`cntrycode')
+	}
+	else {
+		clonevar `cntrycode' = idcntry_raw
+	}
+	cap: sum qescs
+	if (_rc!=0) {
+		gen byte qescs = .
+		levelsof idgrade, local(grades)
+		levelsof `cntrycode', local(countries)
+		foreach country of local countries {
+			foreach grade of local grades {
+				capture drop qaux
+				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
+				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
+			}
+		}
+	}
+	label var qescs "Quintiles of Socio-Economic Status"
+	*</_qescs_>
 
+	 *<_has_qescs_>
+	gen byte has_qescs = (qescs != .)
+	label var has_qescs "Dummy variable for observations with a valid QESCS"
+	*</_has_qescs_>
+	
     noi disp as res "{phang}Step U.4 completed (`output_file'){p_end}"
 
     // FINISHED UPPER GRADE TEMP FILE
@@ -878,6 +943,24 @@ noisily {
     *Comment_AR: Commenting out the ESCS part of the code so we need to gen an empty var called escs:
     
     * gen escs =. 
+    
+    
+    * Adjustment after the append: rename science vars to scie so that ados don't break because of characterlimit. 
+    
+    ren score_timss_science_01 score_timss_scie_01
+    ren score_timss_science_02 score_timss_scie_02
+    ren score_timss_science_03 score_timss_scie_03
+    ren score_timss_science_04 score_timss_scie_04
+    ren score_timss_science_05 score_timss_scie_05
+    
+    ren level_timss_science_01 level_timss_scie_01
+    ren level_timss_science_02 level_timss_scie_02
+    ren level_timss_science_03 level_timss_scie_03
+    ren level_timss_science_04 level_timss_scie_04
+    ren level_timss_science_05 level_timss_scie_05
+    
+    
+    
     
     *---------------------------------------------------------------------------
     * 5) Bring WB countrycode & harmonization thresholds, and save dtas

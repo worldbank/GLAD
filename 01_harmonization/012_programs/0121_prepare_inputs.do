@@ -4,7 +4,7 @@
 * Author: Diana Goldemberg
 *==============================================================================*
 
-noisily {
+qui {
 
 * Both CSVs handled in this do are master files that will be filtered within
 * each GLAD.do for only the specific assesment-year being manipulated

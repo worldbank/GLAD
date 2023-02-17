@@ -1,16 +1,28 @@
 *=========================================================================*
 * GLOBAL LEARNING ASSESSMENT DATABASE (GLAD)
 * Project information at: https://github.com/worldbank/GLAD
+* 
+* WARNING: THIS FILE ONLY REPLICATES "v01" OF PASEC2014 ADAPTATION. IT SHOULD 
+* NOT BE UPDATED OR EDITED. THE OUTPUTS OF THIS DO FILE WERE PRODUCED IN 
+* FEBURARY 1ST 2022, AND COMPARED AGAINST THE WRK FILE OF "V01" ORGINALLY 
+* PRODUCED BY DIANA GOLDEMBERG. 
+*
+* ANY FUTURE RELEASE AND NECESSARY EDITS SHOULD BE DONE ON THE WRK VERSION OF 
+* THIS DO FILE. IF THOSE EDITS WILL REPLACE A PRE-EXISTING RELEASED VINTAGE OF THESE 
+* INDICATORS, PLEASE MAKE SURE YOU FREEZE THE WRK FILE BEFORE STARTING ANY CHANGES.
+* 
+* IN ORDER TO EXECUTE THIS CODE THE DEFAULT VALUES OF THE CODE "WRK" SHOULD BE EDITED 
+* TO "V01" IN 0222 AND 0122.
 *
 * Metadata to be stored as 'char' in the resulting dataset (do NOT use ";" here)
 local region      = "SSA"
-local year        = "2019"
+local year        = "2014"
 local assessment  = "PASEC"
 local master      = "v01_M"
-local adaptation  = "wrk_A_GLAD"
+local adaptation  = "v01_A_GLAD" 
 local module      = "ALL"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Alison Gilberto in May 14, 2021"
+local dofile_info = "last modified by Ahmed Raza in Feburary 1, 2022"
 *
 * Steps:
 * 0) Program setup (identical for all assessments)
@@ -20,7 +32,6 @@ local dofile_info = "last modified by Alison Gilberto in May 14, 2021"
 * 4) ESCS and other calculations (by Aroob, from Feb 2019)
 * 5) Bring WB countrycode & harmonization thresholds, and save dtas
 *=========================================================================*
-
 
 quietly {
 
@@ -49,7 +60,7 @@ quietly {
 	if `from_datalibweb' == 0 {
 		local input_dir	= "${input}/`region'/`region'_`year'_`assessment'/`surveyid'/Data/Stata"
 	}
-  
+
 	// Confirm if the final GLAD file already exists in the local clone
 	cap confirm file "`output_dir'/`output_file'.dta"
 	// If the file does not exist or overwrite_files local is set to one, run the do
@@ -73,10 +84,9 @@ quietly {
 		*---------------------------------------------------------------------------
 		* 1) Open all rawdata, lower case vars, save in temp_dir
 		*---------------------------------------------------------------------------
-		foreach prefix in PASEC2019_GRADE2  PASEC2019_GRADE6 {
+		foreach prefix in PASEC2014_GRADE2  PASEC2014_GRADE6 {
 			if `from_datalibweb'==1 {
 				noi edukit_datalibweb, d(country(`region') year(`year') type(EDURAW) surveyid(`surveyid') filename(`prefix'.dta) `shortcut')
-
 			}
 			else {
 				use "`input_dir'/`prefix'.dta", clear
@@ -93,9 +103,9 @@ quietly {
 		* 2) Combine all rawdata into a single file (merge and append)
 		*---------------------------------------------------------------------------
 
-		use "`temp_dir'/PASEC2019_GRADE2.dta", clear
+		use "`temp_dir'/PASEC2014_GRADE2.dta", clear
 		gen idgrade = 2
-		append using "`temp_dir'/PASEC2019_GRADE6.dta"
+		append using "`temp_dir'/PASEC2014_GRADE6.dta"
 		replace idgrade = 6 if missing(idgrade)
 
 		noi disp as res "{phang}Step 2 completed (`output_file'){p_end}"
@@ -158,7 +168,6 @@ quietly {
 
 		*<_level_assessment_subject_pv_>
 		// Data does not contain a variable for levels, but the documentation provides this conversion
-    ****WHERE IS SUPPOSED TO BE SAVED THIS DOC? WHO CHOOSE "WEB21"?***
 		// for details: SSA_2014_PASEC_v01_M/Doc/Reports/RE_Pasec2014_GB_web21.pdf
 		label define lblevels 0 "Below Level I" 1 "Level I" 2 "Level 2" 3 "Level 3" 4 "Level 4" .a "Missing test score"
 		forvalues pv = 1/5 {
@@ -195,28 +204,27 @@ quietly {
 
 
 		// TRAIT Vars:
-		local traitvars	"age urban* male escs qescs has_qescs"
+		local traitvars	"age urban* male escs"
 
 		*<_age_>
-		gen     age = qe22 if idgrade == 2
-		replace age = qe62 if idgrade == 6
+		gen     age = qe21 if idgrade == 2
+		replace age = qe61 if idgrade == 6
 		label var age "Learner age at time of assessment"
 		*</_age_>
 
 		*<_urban_>
-    *check if 3 is there 
-		gen byte urban = (qd31<3) if !missing(qd31) 
+		gen byte urban = (qd24<=3) if !missing(qd24)
 		label var urban "School is located in urban/rural area"
 		*</_urban_>
 
 		*<_urban_o_>
-		decode qd31, g(urban_o)
+		decode qd24, g(urban_o)
 		label var urban_o "Original variable of urban: school is located in area described as"
 		*</_urban_o_>
 
 		*<_male_>
-		gen     male = (qe23==1) if !missing(qe23) & idgrade == 2
-		replace male = (qe63==1) if !missing(qe63) & idgrade == 6
+		gen     male = (qe22==1) if !missing(qe22) & idgrade == 2
+		replace male = (qe62==1) if !missing(qe62) & idgrade == 6
 		label var male "Learner gender is male/female"
 		*</_male_>
 
@@ -238,8 +246,8 @@ quietly {
 		label var jkzone "Jackknife zone"
 		*</_jkzone_>
 
-		*<_jkrep_> 
-		label var jkrep "Jackknife replicate code" // In 2014 was 1/0 ; in 2019 is 2/0
+		*<_jkrep_>
+		label var jkrep "Jackknife replicate code"
 		*</_jkrep_>
 
 		*<_weight_replicateN_>
@@ -261,37 +269,22 @@ quietly {
 		******************
 
 		*Generating variable for Early Childhood education:
-		gen ECE = 1 if QE66 == 1 | QE25 == 1
-		replace ECE = 0 if QE66 == 2 // for grade 6
-    replace ECE = 0 if QE25 == 2 // add for grade 2
+		gen ECE = 1 if QE63 == 1
+		replace ECE = 0 if QE63 == 2
 
 		*Generating variable for number of books:
-		gen NBOOKS = QE632
+		gen NBOOKS = QE620
 
 		*Generating variable for Socio-Economic Status:
-    
-    *In 2014 (QE628) the answer was yes or no. 
-    gen QE639_w_home=1 if QE639==1 // 1 if "Abonnement, robinet"
-    replace QE639_w_home=0 if QE639==2 | QE639==3| QE639==4| QE639==5| QE639==6 
-    replace QE639_w_home=6 if QE639==96 // invalid 
-    replace QE639_w_home=9 if QE639==99 // missing
-    
-		foreach var of varlist QE635* QE636* QE638 QE633 QE639_w_home QE621* {
+		foreach var of varlist QE621* QE622* QE624 QE625 QE626 QE627 QE628 QE616* {
 			replace `var' = 0 if `var' == 2
-		} // only for grade 6
+		}
 
-		gen hhsize = 1
-    // will be the minimun number of members in the house: 
-    foreach var of varlist QE64A-QE64G {
-    	replace hhsize = hhsize +1 if `var'==1
-      replace hhsize = 0 if `var'==2
-      replace hhsize = 6 if `var'==6
-      replace hhsize = 9 if `var'==9
-    }
-		egen hedu = rowtotal(QE621A QE621B)
-    
-		*wall related variable structure changed in 2019.
+		gen hhsize = QE629
+		egen hedu = rowtotal(QE616A QE616B)
+		tab QE623, gen(wall)
 
+		*SES description is available in Cambodia Analysis:
 		*Using principal component analysis:
 		egen ESCS = std(SES)
 		*Replacing missing values:
@@ -301,46 +294,12 @@ quietly {
 		replace ESCS = ESCS_mean_cnt if IDGRADE == 6 & missing(ESCS)
 
 		*The data contain assets and housing conditions
-		bysort IDCNTRY_RAW IDSCHOOL IDGRADE: egen SCHESCS = mean(ESCS)
-		bysort IDCNTRY_RAW IDGRADE: egen CNTESCS = mean(ESCS)
+		bysort IDCNTRY IDSCHOOL IDGRADE: egen SCHESCS = mean(ESCS)
+		bysort IDCNTRY IDGRADE: egen CNTESCS = mean(ESCS)
 
 		*** QUICK FIX ****
 		rename *, lower
 		******************
-		
-		* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
-		* This is the variable used to compute results by Socio Economic Status.
-		* Ensure that CNTRY Identifer is used as STRING.
-		*<_qescs_>
-		tempvar cntrycode
-		cap: confirm numeric variable idcntry_raw
-		if (_rc == 0) {
-			tostring idcntry_raw, gen(`cntrycode')
-		}
-		else {
-			clonevar `cntrycode' = idcntry_raw
-		}
-		cap: sum qescs
-		if (_rc!=0) {
-			gen byte qescs = .
-			levelsof idgrade, local(grades)
-			levelsof `cntrycode', local(countries)
-			foreach country of local countries {
-				foreach grade of local grades {
-					capture drop qaux
-					capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
-					if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
-				}
-			}
-		}
-		label var qescs "Quintiles of Socio-Economic Status"
-		*</_qescs_>
-
-		 *<_has_qescs_>
-		gen byte has_qescs = (qescs != .)
-		label var has_qescs "Dummy variable for observations with a valid QESCS"
-		*</_has_qescs_>
-		
 
 		noi disp as res "{phang}Step 4 completed (`output_file'){p_end}"
 
@@ -351,13 +310,13 @@ quietly {
 
 		// Brings World Bank countrycode from ccc_list
 		// NOTE: the *assert* is intentional, please do not remove it.
-		// if you run into an assert error, edit manually the 011_rawdata/master_countrycode_list.csv
+		// if you run into an assert error, edit the 011_rawdata/master_countrycode_list.csv
 		merge m:1 idcntry_raw using "`temp_dir'/countrycode_list.dta", keep(match) assert(match using) nogen
 
 		// Surveyid is needed to merge harmonization proficiency thresholds
 		gen str surveyid = "`region'_`year'_`assessment'"
 		label var surveyid "Survey ID (Region_Year_Assessment)"
-  
+
 		// New variable class: keyvars (not IDs, but rather key to describe the dataset)
 		local keyvars "surveyid countrycode national_level"
 

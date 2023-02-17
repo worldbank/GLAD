@@ -3,21 +3,21 @@
 * Project information at: https://github.com/worldbank/GLAD
 *
 * Metadata to be stored as 'char' in the resulting dataset (do NOT use ";" here)
-local region      = "SSA"
-local year        = "2007"
-local assessment  = "SACMEQ"
+local region      = "MLI" // Mali
+local year        = "2011"
+local assessment  = "PASEC"
 local master      = "v01_M"
 local adaptation  = "wrk_A_GLAD"
 local module      = "ALL"
 local ttl_info    = "Joao Pedro de Azevedo [eduanalytics@worldbank.org]"
-local dofile_info = "last modified by Joao Pedro Azevedo in Feb 05, 2022"  /* change date*/
+local dofile_info = "last modified by Diana Goldemberg in January 23, 2020"
 *
 * Steps:
 * 0) Program setup (identical for all assessments)
 * 1) Open all rawdata, lower case vars, save in temp_dir
 * 2) Combine all rawdata into a single file (merge and append)
 * 3) Standardize variable names across all assessments
-* 4) ESCS and other calculations (by Aroob, from Feb 2019)
+* 4) ESCS and other calculations (TBD)
 * 5) Bring WB countrycode & harmonization thresholds, and save dtas
 *=========================================================================*
 
@@ -54,16 +54,8 @@ quietly {
   // If the file does not exist or overwrite_files local is set to one, run the do
   if (_rc == 601) | (`overwrite_files') {
 
-    // Filter the master country list to only this assessment-year
-    use "${clone}/01_harmonization/011_rawdata/master_countrycode_list.dta", clear
-    keep if (assessment == "`assessment'") & (year == `year')
-    // Most assessments use the numeric idcntry_raw but a few (ie: PASEC 1996) have instead idcntry_raw_str
-    if use_idcntry_raw_str[1] == 1 {
-      drop   idcntry_raw
-      rename idcntry_raw_str idcntry_raw
-    }
-    keep idcntry_raw national_level countrycode
-    save "`temp_dir'/countrycode_list.dta", replace
+    // Filter the master country list to only this assessment-year:
+    *** SEGMENT NOT NEEDED FOR GLAD OF A SINGLE COUNTRY ***
 
     // Tokenized elements from the header to be passed as metadata
     local glad_description  "This dataset is part of the Global Learning Assessment Database (GLAD). It contains microdata from `assessment' `year'. Each observation corresponds to one learner (student or pupil), and the variables have been harmonized."
@@ -72,209 +64,185 @@ quietly {
     *---------------------------------------------------------------------------
     * 1) Open all rawdata, lower case vars, save in temp_dir
     *---------------------------------------------------------------------------
-    foreach prefix in back_03_2007_06_9 {
+    foreach filename in MALI_2A MALI_5A {
       if `from_datalibweb'==1 {
-        noi edukit_datalibweb, d(country(`region') year(`year') type(EDURAW) surveyid(`surveyid') filename(`prefix'.dta) `shortcut')
+        noi edukit_datalibweb, d(country(`region') year(`year') type(EDURAW) surveyid(`surveyid') filename(`filename'.dta) `shortcut')
       }
       else {
-        use "`input_dir'/`prefix'.dta", clear
+        use "`input_dir'/`filename'.dta", clear
       }
       rename *, lower
+      gen str filename = "`filename'"
       compress
-      save "`temp_dir'/`prefix'.dta", replace
+      save "`temp_dir'/TEMP_`filename'.dta", replace
     }
 
     noi disp as res "{phang}Step 1 completed (`output_file'){p_end}"
 
+
     *---------------------------------------------------------------------------
     * 2) Combine all rawdata into a single file (merge and append)
     *---------------------------------------------------------------------------
-    // Nothing to append. All data in a single file
-    // PLACEHOLDER!!!! DOUBLE CHECK IN indir that this prefix is the only dta
+    use "`temp_dir'/TEMP_MALI_2A.dta", clear
+    append using "`temp_dir'/TEMP_MALI_5A.dta", force
 
     noi disp as res "{phang}Step 2 completed (`output_file'){p_end}"
-
 
     *---------------------------------------------------------------------------
     * 3) Standardize variable names across all assessments
     *---------------------------------------------------------------------------
     // For each variable class, we create a local with the variables in that class
-    // so that the final step of saving the GLAD dta  knows which vars to save
+    //     so that the final step of saving the GLAD dta  knows which vars to save
 
     // ID Vars:
-    local idvars "idcntry_raw idschool idgrade idclass idlearner"
-
-    *<_idcntry_raw_>
-    clonevar idcntry_raw = idcntry
-    label var idcntry_raw "Country ID, as coded in rawdata"
-    *</_idcntry_raw_>
+    local idvars	"idschool idgrade idlearner"  // no idclass & idcntry_raw does not exist for EGRA (single country)
 
     *<_idschool_>
+    clonevar idschool = numecole
     label var idschool "School ID"
     *</_idschool_>
 
     *<_idgrade_>
-    gen int idgrade = 6
+    gen int idgrade = 2 if filename == "MALI_2A"
+    replace idgrade = 5 if filename == "MALI_5A"
     label var idgrade "Grade ID"
     *</_idgrade_>
 
     *<_idclass_>
+    gen int idclass = -99	// PLACEHOLDER: double check documentation to make sure it doesnt exist / give more informative missing value
     label var idclass "Class ID"
     *</_idclass_>
 
     *<_idlearner_>
-    clonevar idlearner = idpupil
+    clonevar idlearner = numeleve
     label var idlearner "Learner ID"
     *</_idlearner_>
 
-    // Drop any value labels of idvars, to be okay to append multiple surveys
-    foreach var of local idvars {
-      cap label values `var' .
-    }
-
 
     // VALUE Vars:
-    local valuevars	"score_scmeq* level_scmeq*"
+    local valuevars	"score_pasec* level_pasec*"
 
     *<_score_assessment_subject_pv_>
-    clonevar  score_scmeq_read = zralocp
-    clonevar  score_scmeq_math = zmalocp
-    foreach subject in read math {
-      label var score_scmeq_`subject' "Sacmeq score for `subject'"
-      char      score_scmeq_`subject'[clo_marker] "number"
+    foreach moment in ini fin {
+      clonevar score_pasec_read_`moment' = s`moment'2f if idgrade == 2
+      replace  score_pasec_read_`moment' = s`moment'5f if idgrade == 5
+      clonevar score_pasec_math_`moment' = s`moment'2m if idgrade == 2
+      replace  score_pasec_math_`moment' = s`moment'5m if idgrade == 5
+      char     score_pasec_read_`moment'[clo_marker] "number"
+      char     score_pasec_math_`moment'[clo_marker] "number"
     }
+    label var score_pasec_read_ini	"Pasec score for read (initial)"
+    label var score_pasec_read_fin	"Pasec score for read (final)"
+    label var score_pasec_math_ini	"Pasec score for math (initial)"
+    label var score_pasec_math_fin	"Pasec score for math (final)"
     *</_score_assessment_subject_pv_>
 
     *<_level_assessment_subject_pv_>
-    clonevar  level_scmeq_read = zralevp
-    clonevar  level_scmeq_math = zmalevp
-    foreach subject in read math {
-      label var level_scmeq_`subject' "Sacmeq level for `subject'"
-      char      level_scmeq_`subject'[clo_marker] "factor"
+    // Data does not contain a variable for levels, but the documentation provides this conversion
+    // for details: RapportMali- E3.pdf pages 29-38
+    label define lblevels 1 "Level I" 2 "Level 2" 3 "Level 3" 4 "Level 4" .a "Missing test score"
+    foreach moment in ini fin {
+      gen byte  level_pasec_read_`moment': lblevels = .a
+      gen byte  level_pasec_math_`moment': lblevels = .a
+      // Reading, grade 2
+      replace level_pasec_read_`moment' = 4 if s`moment'2f < 9999 & idgrade == 2
+      replace level_pasec_read_`moment' = 3 if s`moment'2f < 565  & idgrade == 2
+      replace level_pasec_read_`moment' = 2 if s`moment'2f < 527  & idgrade == 2
+      replace level_pasec_read_`moment' = 1 if s`moment'2f < 450  & idgrade == 2
+      // Reading, grade 5
+      replace level_pasec_read_`moment' = 4 if s`moment'5f < 9999  & idgrade == 5
+      replace level_pasec_read_`moment' = 3 if s`moment'5f < 626   & idgrade == 5
+      replace level_pasec_read_`moment' = 2 if s`moment'5f < 506.2 & idgrade == 5
+      replace level_pasec_read_`moment' = 1 if s`moment'5f < 426.3 & idgrade == 5
+      // Mathematics, grade 2 (no level 4 exist)
+      replace level_pasec_math_`moment' = 3 if s`moment'2m < 9999 & idgrade == 2
+      replace level_pasec_math_`moment' = 2 if s`moment'2m < 549  & idgrade == 2
+      replace level_pasec_math_`moment' = 1 if s`moment'2m < 469  & idgrade == 2
+      // Mathematics, grade 5 (no level 4 exist)
+      replace level_pasec_math_`moment' = 3 if s`moment'5m < 9999  & idgrade == 5
+      replace level_pasec_math_`moment' = 2 if s`moment'5m < 650.5 & idgrade == 5
+      replace level_pasec_math_`moment' = 1 if s`moment'5m < 509.1 & idgrade == 5
+      // Char markers to facilitate CLO
+      char level_pasec_read_`moment'[clo_marker] "factor"
+      char level_pasec_math_`moment'[clo_marker] "factor"
     }
+    label var level_pasec_read_ini "Pasec level for read (initial)"
+    label var level_pasec_read_fin "Pasec level for read (final)"
+    label var level_pasec_math_ini "Pasec level for math (initial)"
+    label var level_pasec_math_fin "Pasec level for math (final)"
     *</_level_assessment_subject_pv_>
 
 
     // TRAIT Vars:
-    local traitvars	"age urban* male escs qescs has_qescs"
+    local traitvars	"age urban* male escs"   // PLACEHOLDER: TBD
 
     *<_age_>
-    gen age = zpagemon/12	// Age was in months
+    clonevar age = qe22_imp if idgrade == 2
+    replace  age = qe52_imp if idgrade == 5
+    * There are 3 learner age vars: from learner/teacher/principal questionnaire
+    * we chose to report the one from the learners' questionnaires
     label var age "Learner age at time of assessment"
     *</_age_>
 
     *<_urban_>
-    clonevar urban = zsloc
+    gen byte urban = inlist(qd38_imp, 1, 2) if !missing(qd38_imp)
     label var urban "School is located in urban/rural area"
     *</_urban_>
 
     *<_urban_o_>
-    clonevar urban_o = slocat
-    // PLACEHOLDER!!! check the documentation on how to label this
-    label var urban_o "TBD"
+    decode qd38_imp, g(urban_o)
+    label var urban_o "Original variable of urban: school is located in urban/rural area"
     *</_urban_o_>
 
     *<_male_>
-    gen byte male  = (zpsex==0) & !missing(zpsex) 	// Originally coded 0 = boy, 1 = girl
+    clonevar male = qe21 if idgrade == 2
+    replace  male = qe51 if idgrade == 5
     label var male "Learner gender is male/female"
     *</_male_>
 
-
     // SAMPLE Vars:
-    local samplevars "strata learner_weight*"
+    local samplevars "learner_weight strata"
 
     *<_learner_weight_>
-    clonevar  learner_weight = pweight2
+    clonevar  learner_weight = poidseleve0
     label var learner_weight "Learner weight"
     *</_learner_weight_>
 
     *<_strata_>
-    encode stratum, gen(strata)
+    clonevar  strata = numstrate
     label var strata "Strata"
     *</_strata_>
 
+    * Survey setup, considering two-stage sampling
+    svyset idschool [pw = learner_weight], strata(strata) || _n
 
     noi disp as res "{phang}Step 3 completed (`output_file'){p_end}"
 
-
     *---------------------------------------------------------------------------
-    * 4) ESCS and other calculations (by Aroob, from Feb 2019)
+    * 4) ESCS and other calculations (TBD)
     *---------------------------------------------------------------------------
-
-    *** QUICK FIX ****
-    rename *, upper
-    ******************
-
-    gen LOW_READING_PROFICIENCY_WB  = (ZRALEVP >= 4) & !missing(ZRALEVP)
-    gen LOW_READING_PROFICIENCY_UIS = (ZRALEVP >= 3) & !missing(ZRALEVP)
-
-    *Dolata S. states the ESCS variable to be zpsesscr
-    egen ESCS = std(ZPSESSCR)
-    bysort IDCNTRY IDSCHOOL: egen SCHESCS = mean(ESCS)
-    bysort IDCNTRY: egen CNTESCS = mean(ESCS)
-
-    label var ESCS ""
-
-    *** QUICK FIX ****
-    rename *, lower
-    ******************
-
-	* Quintiles of ESCS // this setion of the code used to be in 0221 or 0222.
-	* This is the variable used to compute results by Socio Economic Status.
-	* Ensure that CNTRY Identifer is used as STRING.
-	*<_qescs_>
-	tempvar cntrycode
-	confirm numeric variable idcntry_raw
-	if (_rc == 0) {
-		tostring idcntry_raw, gen(`cntrycode')
-	}
-	else {
-		clonevar `cntrycode' = idcntry_raw
-	}
-	cap: sum qescs
-	if (_rc!=0) {
-		gen byte qescs = .
-		levelsof idgrade, local(grades)
-		levelsof `cntrycode', local(countries)
-		foreach country of local countries {
-			foreach grade of local grades {
-				capture drop qaux
-				capture xtile qaux = escs if `cntrycode' == "`country'" & idgrade == `grade' [aw = learner_weight] , nq(5)
-				if _rc == 0 replace qescs = qaux if `cntrycode' == "`country'" & idgrade == `grade'
-			}
-		}
-	}
-	label var qescs "Quintiles of Socio-Economic Status"
-	*</_qescs_>
-
-	 *<_has_qescs_>
-	gen byte has_qescs = (qescs != .)
-	label var has_qescs "Dummy variable for observations with a valid QESCS"
-	*</_has_qescs_>
+    // This section is TBD
+    gen escs = .a
 
     noi disp as res "{phang}Step 4 completed (`output_file'){p_end}"
-
 
     *---------------------------------------------------------------------------
     * 5) Bring WB countrycode & harmonization thresholds, and save dtas
     *---------------------------------------------------------------------------
 
     // Brings World Bank countrycode from ccc_list
-    // NOTE: the *assert* is intentional, please do not remove it.
-    // if you run into an assert error, edit the 011_rawdata/master_countrycode_list.csv
-    merge m:1 idcntry_raw using "`temp_dir'/countrycode_list.dta", keep(match) assert(match using) nogen
+    *** SEGMENT NOT NEEDED FOR FILE IS FOR A SINGLE COUNTRY ***
+    gen countrycode = "`region'"
+    label var countrycode "WB country code (3 letters)"
 
     // Surveyid is needed to merge harmonization proficiency thresholds
     gen str surveyid = "`region'_`year'_`assessment'"
     label var surveyid "Survey ID (Region_Year_Assessment)"
 
+    gen byte national_level = 1
+
     // New variable class: keyvars (not IDs, but rather key to describe the dataset)
     local keyvars "surveyid countrycode national_level"
-
-	// Specify Survye Design for SACMEQ
-	if "`assessment'" == "SACMEQ" {
-        svyset idschool [pw = learner_weight], strata(strata) || _n
-    }
 
     // This function compresses the dataset, adds metadata passed in the arguments as chars, save GLAD_BASE.dta
     // which contains all variables, then keep only specified vars and saves GLAD.dta, and delete files in temp_dir
